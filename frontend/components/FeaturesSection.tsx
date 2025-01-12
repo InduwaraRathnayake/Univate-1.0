@@ -5,7 +5,6 @@ import { cn } from "@/lib/utils";
 import Image from "next/image";
 import createGlobe from "cobe";
 import { useEffect, useRef } from "react";
-import { motion } from "framer-motion";
 
 export function FeaturesSection() {
   const features = [
@@ -47,16 +46,11 @@ export function FeaturesSection() {
           Packed with thousands of features
         </h4>
 
-        <p className="text-sm lg:text-base  max-w-2xl  my-4 mx-auto text-slate-200 text-center font-normal dark:text-neutral-300">
-          Univate 1.0 offers a comprehensive set of features, including stream
-          selection quizzes, GPA tracking, career guidance, and access to a
-          digitalized CSE handbook, all designed to help students make informed
-          decisions and streamline their academic journey.
-        </p>
       </div>
 
       <div className="relative ">
-        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border rounded-md dark:border-neutral-800">
+        
+        <div className="grid grid-cols-1 lg:grid-cols-6 mt-12 xl:border border-sky-300 rounded-md dark:border-neutral-800">
           {features.map((feature) => (
             <FeatureCard key={feature.title} className={feature.className}>
               <FeatureTitle>{feature.title}</FeatureTitle>
@@ -117,13 +111,7 @@ export const SkeletonOne = () => {
               height={300}
               className="w-full h-50 object-cover rounded-sm"
             />
-            <Image
-            src="/gpa1.png"
-              alt="Image 2"
-              width={300}
-              height={300}
-              className="w-full h-50 object-cover rounded-sm"
-            />
+           
           </div>
         </div>
       </div>
@@ -184,20 +172,7 @@ export const SkeletonTwo = () => {
           height={300}
           className="w-full h-50 object-cover rounded-sm"
         />
-        <Image
-          src="/stream1.jpg"
-          alt="Image 3"
-          width={300}
-          height={300}
-          className="w-full h-50 object-cover rounded-sm"
-        />
-        <Image
-          src="/stream1.jpg"
-          alt="Image 4"
-          width={300}
-          height={300}
-          className="w-full h-50 object-cover rounded-sm"
-        />
+        
       </div>
     </div>
   );
@@ -220,50 +195,4 @@ export const SkeletonFour = () => {
   );
 };
 
-export const Globe = ({ className }: { className?: string }) => {
-  const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  useEffect(() => {
-    let phi = 0;
-
-    if (!canvasRef.current) return;
-
-    const globe = createGlobe(canvasRef.current, {
-      devicePixelRatio: 2,
-      width: 600 * 2,
-      height: 600 * 2,
-      phi: 0,
-      theta: 0,
-      dark: 1,
-      diffuse: 1.2,
-      mapSamples: 16000,
-      mapBrightness: 6,
-      baseColor: [0.3, 0.3, 0.3],
-      markerColor: [0.1, 0.8, 1],
-      glowColor: [1, 1, 1],
-      markers: [
-        // longitude latitude
-        { location: [37.7595, -122.4367], size: 0.03 },
-        { location: [40.7128, -74.006], size: 0.1 },
-      ],
-      onRender: (state) => {
-        // Called on every animation frame.
-        // `state` will be an empty object, return updated params.
-        state.phi = phi;
-        phi += 0.01;
-      },
-    });
-
-    return () => {
-      globe.destroy();
-    };
-  }, []);
-
-  return (
-    <canvas
-      ref={canvasRef}
-      style={{ width: 600, height: 600, maxWidth: "100%", aspectRatio: 1 }}
-      className={className}
-    />
-  );
-};
