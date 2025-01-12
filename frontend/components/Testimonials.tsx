@@ -39,8 +39,8 @@ export function Testimonials() {
     },
   ];
   return (
-    <div className="pb-20 pt-40 ">
-         <h1 className="text-5xl font-bold dark:text-white text-[#adbbda]  flex items-center justify-center">
+    <div className="pb-10 pt-10 ">
+         <h1 className="text-5xl font-bold dark:text-white text-[#ede8f5]  flex items-center justify-center">
         Testimonials
       </h1>
     <div className="h-screen w-full ">
