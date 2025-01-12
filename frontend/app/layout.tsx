@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import Provider from "@/app/Provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,6 +16,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "Univate 1.0",
   description: "Web application that serves as an interactive platform to assist CSE undergraduates in selecting their streams",
+  icons: [ { url: "logoBadge.png", rel: "icon" } ],
 };
 
 export default function RootLayout({
@@ -25,9 +27,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} bg-gradient-to-l from-[#3D52A0] via-[#7091E6] to-[#EDE8F5] bg-[length:200%_200%]`}
+        className={`${geistSans.variable} ${geistMono.variable} bg-gradient-to-bl from-[#3D52A0] via-[#7091E6] to-[#EDE8F5] bg-[length:200%_200%]`}
       >
-        {children}
+        <Provider>
+          {children}
+        </Provider>
       </body>
     </html>
   );
