@@ -11,7 +11,7 @@ const StreamCardList = () => {
       description:
         "Transform raw data into actionable insights and drive the future of decision-making.",
       image: "/datascience.jpg",
-      path: "/stream-infomation-hub/DSE",
+      path: "/stream-information-hub/DSE",
     },
     {
       id: 2,
@@ -19,7 +19,7 @@ const StreamCardList = () => {
       description:
         "Shield the digital world by mastering the art of ethical hacking and cyber defense.",
       image: "cybersecurity.jpg",
-      path: "/stream-infomation-hub/CyS",
+      path: "/stream-information-hub/CyS",
     },
     {
       id: 3,
@@ -27,7 +27,7 @@ const StreamCardList = () => {
       description:
         "Merge hardware and software to create innovative solutions.",
       image: "ice.jpg",
-      path: "/stream-infomation-hub/ICE",
+      path: "/stream-information-hub/ICE",
     },
     {
         id: 4,
@@ -35,7 +35,7 @@ const StreamCardList = () => {
         description:
           "Your Gateway to Endless Possibilities and Boundless Innovation.",
         image: "cse.jpg",
-        path: "/stream-infomation-hub/Main",
+        path: "/stream-information-hub/Main",
       },
   ];
 
