@@ -15,10 +15,6 @@ export function Navbar() {
     router.push("/login");
   };
 
-  const handleSignUpClick = () => {
-    router.push("/signup");
-  };
-
   return (
     <nav className="fixed w-full z-50">
       <div className=" mx-auto">
@@ -41,10 +37,10 @@ export function Navbar() {
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-6">
               <Link
-                href="/courses"
+                href="/modules"
                 className="text-white hover:text-gray-200 transition-colors"
               >
-                Courses
+                Modules
               </Link>
               <Link
                 href="/resources"
@@ -63,11 +59,6 @@ export function Navbar() {
                   title="Sign In"
                   otherClasses="text-white hover:text-gray-200"
                   handleClick={handleSignInClick}
-                />
-                <Button
-                  title="Sign Up"
-                  otherClasses="text-white hover:text-gray-200"
-                  handleClick={handleSignUpClick}
                 />
               </div>
             </div>
@@ -94,11 +85,11 @@ export function Navbar() {
               <div className="backdrop-blur-lg bg-white/10 rounded-2xl p-4 shadow-lg">
                 <div className="flex flex-col space-y-4">
                   <Link
-                    href="/courses"
+                    href="/modules"
                     className="text-white hover:text-gray-200 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
-                    Courses
+                    Modules
                   </Link>
                   <Link
                     href="/resources"
@@ -118,11 +109,6 @@ export function Navbar() {
 
                   <Button
                     title="Sign In"
-                    otherClasses="text-white hover:text-gray-200 justify-center"
-                    handleClick={() => { handleSignInClick(); setIsOpen(false); }}
-                  />
-                  <Button
-                    title="Sign Up"
                     otherClasses="text-white hover:text-gray-200 justify-center"
                     handleClick={() => { handleSignInClick(); setIsOpen(false); }}
                   />

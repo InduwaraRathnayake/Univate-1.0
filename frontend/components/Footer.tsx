@@ -10,7 +10,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-800 text-white  w-full">
+    <footer className="bg-gray-800 text-white  w-full mt-8">
       <div className="max-w-6xl mx-auto text-center py-8">
         <Image
           src="/logo.png"
@@ -44,7 +44,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 pt-8">
+      <div className="max-w-6xl mx-auto grid grid-cols-2 lg:grid-cols-4 gap-8 pt-8 pr-4 pl-4">
         <div>
           <h2 className="font-bold mb-4">Services</h2>
           <ul>
@@ -79,7 +79,7 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="text-center mt-8">
+      <div className=" text-center mt-8 pb-8">
         <div className="mb-4">
           <FaFacebookF className="inline mx-2" />
           <FaLinkedinIn className="inline mx-2" />

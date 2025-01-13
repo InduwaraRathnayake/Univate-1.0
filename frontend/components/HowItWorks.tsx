@@ -14,7 +14,7 @@ const HowItWorks = () => {
 
       {/* Right Text */}
       <div className="flex-1 text-center md:text-left px-4">
-        <h2 className="text-4xl font-bold text-[#3d52a0] mb-4">
+        <h2 className="text-4xl font-bold text-[#3D52E0] mb-4">
           Navigating Your Future with Our Platform
         </h2>
         <p className="text-lg text-[#ede8f5] dark:text-[#adbbda] mb-6">
@@ -24,7 +24,7 @@ const HowItWorks = () => {
           access to a personalized dashboard where you can select your desired
           stream, monitor your academic progress with detailed CGPA and SGPA
           trackers, and explore tailored resources to enhance your skills and
-          knowledge. 
+          knowledge.
         </p>
       </div>
     </section>

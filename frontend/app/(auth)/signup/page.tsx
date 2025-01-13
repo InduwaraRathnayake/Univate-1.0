@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import Button from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Github, Mail } from "lucide-react";
+import { Mail } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -88,7 +88,7 @@ export default function Signup() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl font-bold text-[#3D52A0]"
+              className="text-3xl font-bold text-[#3D52E0]"
             >
               Create an account
             </motion.h2>
@@ -96,7 +96,7 @@ export default function Signup() {
               Already have an account?{" "}
               <Link
                 href="/login"
-                className="font-medium text-[#7091A6] hover:text-[#3D52A0] transition-colors"
+                className="font-medium text-[#7091A6] hover:text-[#3D52E0] transition-colors"
               >
                 Sign in
               </Link>
