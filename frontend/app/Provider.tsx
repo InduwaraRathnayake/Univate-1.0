@@ -2,16 +2,18 @@
 
 import { usePathname } from "next/navigation";
 import { Navbar } from "@/components/NavBar";
+import Footer from "@/components/Footer";
 
 export default function Provider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const noNavbarRoutes = ["/login", "/signup"];
-  const showNavbar = !noNavbarRoutes.includes(pathname);
+  const hiddenPaths = ["/login", "/signup"];
+  const show = !hiddenPaths.includes(pathname);
 
   return (
     <>
-      {showNavbar && <Navbar />}
+      {show && <Navbar />}
       {children}
+      {show && <Footer />}
     </>
   );
 }
