@@ -1,16 +1,11 @@
 import ModuleContent from "./module-content";
-import { modules } from "@/lib/data/modules";
 
-export const dynamicParams = true; // Allow unknown dynamic routes
-
-export async function generateStaticParams() {
-  return modules.map((module) => ({
-    moduleId: module.id.toLowerCase(),
-  }));
-}
-
-export default  function ModulePage({ params }: { params: { moduleId?: string } }) {
-  const moduleId = params?.moduleId;
+export default async function ModulePage({
+  params,
+}: {
+  params: { moduleId: string };
+}) {
+  const { moduleId } = await params;
 
   if (!moduleId) {
     return (

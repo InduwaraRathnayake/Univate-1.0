@@ -39,7 +39,7 @@ export function Testimonials() {
     },
   ];
   return (
-    <div className="pb-10 pt-10 ">
+    <div className="py-28 bg-black min-h-screen">
          <h1 className="text-5xl font-bold dark:text-white text-[#ede8f5]  flex items-center justify-center">
         Testimonials
       </h1>

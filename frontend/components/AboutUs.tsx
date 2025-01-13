@@ -81,7 +81,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
 
 const AboutUs = () => {
   return (
-    <section className=" py-16 px-4 sm:px-6 lg:px-8" aria-labelledby="team-heading">
+    <section className=" min-h-screen py-28 px-4 sm:px-6 lg:px-8" aria-labelledby="team-heading">
       <div className="max-w-7xl mx-auto">
         <h2 id="team-heading" className="text-5xl font-bold dark:text-white text-[#ede8f5] text-center mb-12">Meet Our Team</h2>
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">

@@ -10,7 +10,7 @@ const Footer = () => {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="bg-gray-800 text-white  w-full mt-8">
+    <footer className="bg-black text-white  w-full mt-8 ">
       <div className="max-w-6xl mx-auto text-center py-8">
         <Image
           src="/logo.png"
