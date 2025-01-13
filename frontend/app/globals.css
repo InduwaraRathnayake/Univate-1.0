@@ -65,3 +65,7 @@
   }
 }
 
+html {
+  scroll-behavior: smooth;
+}
+

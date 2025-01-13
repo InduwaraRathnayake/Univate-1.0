@@ -1,10 +1,9 @@
-'use client';
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { FaArrowDown, FaLongArrowAltRight } from "react-icons/fa";
-import Button from "./ui/button";
-import { FaLocationArrow } from "react-icons/fa6";
+import { TextGenerateEffect } from "./ui/text-generate-effect";
 
 const Hero = () => {
   const [activeLayer, setActiveLayer] = useState(1);
@@ -14,31 +13,33 @@ const Hero = () => {
       id: 1,
       title: "Empowering Your Academic Journey",
       subtitle: "Discover the path that aligns with your aspirations",
-      content: "Univate 1.0 helps you explore CSE streams, track your GPA, and make informed decisions for a successful career",
-      image: "/slider1.jpeg"
+      content:
+        "Univate 1.0 helps you explore CSE streams, track your GPA, and make informed decisions for a successful career",
+      image: "/slider1.jpeg",
     },
     {
       id: 2,
       title: "Your Personalized Guide to Excellence",
       subtitle: "Navigate streams with confidence and clarity",
-      content: "With Univate 1.0, you can assess your strengths, receive tailored guidance, and stay on top of your academic performance",
-      image: "/slider2.jpeg"
+      content:
+        "With Univate 1.0, you can assess your strengths, receive tailored guidance, and stay on top of your academic performance",
+      image: "/slider2.jpeg",
     },
     {
       id: 3,
       title: "Build Your Future, One Step at a Time",
       subtitle: "Innovate, achieve, and excel with the right tools",
-      content: "From stream selection quizzes to a digitalized handbook, Univate 1.0 provides everything you need to achieve your dreams",
-      image: "/slider3.jpeg"
-    }
+      content:
+        "From stream selection quizzes to a digitalized handbook, Univate 1.0 provides everything you need to achieve your dreams",
+      image: "/slider3.jpeg",
+    },
   ];
 
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveLayer((prev) => (prev < layers.length ? prev + 1 : 1));
-    }, 5000); // Change slide every 5 seconds
-
-    return () => clearInterval(interval); // Cleanup interval on component unmount
+    }, 5000);
+    return () => clearInterval(interval);
   }, [layers.length]);
 
   return (
@@ -57,19 +58,18 @@ const Hero = () => {
         >
           <div
             className="relative w-full min-h-screen bg-cover bg-center"
-            style={{
-              backgroundImage: `url(${layer.image})`,
-            }}
+            style={{ backgroundImage: `url(${layer.image})` }}
           >
             <div className="absolute inset-0 bg-black/50" />
             <div className="relative z-10 container mx-auto px-4 h-screen flex flex-col justify-center items-start">
               <motion.h1
+                key={`title-${layer.id}-${activeLayer}`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.2 }}
+                transition={{ delay: 0 }}
                 className="text-5xl md:text-7xl font-bold text-white mb-6"
               >
-                {layer.title}
+                <TextGenerateEffect words={layer.title} duration={0.3} />
               </motion.h1>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
@@ -93,21 +93,17 @@ const Hero = () => {
                 transition={{ delay: 0.8 }}
                 className="flex gap-6 items-center"
               >
-                 {/* <a href="#about">
-            <Button
-              title="Get Started"
-              icon={<FaLocationArrow />}
-              position="right"/>
-              </a> */}
-                <button className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-opacity-90 transition-all flex items-center gap-2">
-                  Get Started <FaLongArrowAltRight />
-                </button>
+                <a href="#about">
+                  <button className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-opacity-90 transition-all flex items-center gap-2">
+                    Get Started <FaArrowDown />
+                  </button>
+                </a>
                 {index < layers.length - 1 && (
                   <button
                     onClick={() => setActiveLayer(layer.id + 1)}
-                    className="text-white flex items-center gap-2 hover:text-gray-300 transition-colors"
+                    className="text-white flex items-center gap-2 hover:text-gray-300 transition-colors animate-pulse"
                   >
-                    Explore More <FaArrowDown className="animate-bounce" />
+                    Explore More <FaLongArrowAltRight className="animate-pulse" />
                   </button>
                 )}
               </motion.div>

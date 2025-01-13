@@ -2,7 +2,7 @@ import React from "react";
 
 const HowItWorks = () => {
   return (
-    <section className=" flex flex-col md:flex-row items-center justify-center py-16 px-4 pt-60 mt-10 mb-20 ">
+    <section className=" flex flex-col md:flex-row items-center justify-center py-16 px-4 pt-60 mt-10 mb-20 " id="about">
       {/* Left Image */}
       <div className="flex-1 mb-8 md:mb-0 mr-10">
         <img
