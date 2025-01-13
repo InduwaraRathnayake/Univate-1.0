@@ -1,6 +1,5 @@
 import AboutUs from "@/components/AboutUs";
 import { FeaturesSection } from "@/components/FeaturesSection";
-import Footer from "@/components/Footer";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import { Services } from "@/components/Services";
