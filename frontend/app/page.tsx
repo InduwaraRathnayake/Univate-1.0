@@ -13,16 +13,11 @@ export default function Home() {
         <Hero />
       </div>
       <div className="max-w-7xl w-full sm:px-10 px-5">
-        
         <HowItWorks />
         <Services />
         <FeaturesSection />
         <Testimonials />
         <AboutUs />
-      </div>
-      <div className="w-full">
-        {" "}
-        <Footer />
       </div>
     </main>
   );
