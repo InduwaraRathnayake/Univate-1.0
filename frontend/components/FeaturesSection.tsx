@@ -8,7 +8,7 @@ import Image from "next/image";
 export function FeaturesSection() {
   const features = [
     {
-      title: "GPA Tracker",
+      title: "GPA Calculator",
       description:
         "Track and manage your project issues with ease using our intuitive interface.",
       skeleton: <SkeletonOne />,
@@ -23,9 +23,9 @@ export function FeaturesSection() {
       className: "border-b col-span-1 lg:col-span-4 dark:border-neutral-800",
     },
     {
-      title: "Career Guidance",
+      title: "User Account Management",
       description:
-        "Provides personalized advice and resources to help students navigate their career paths.",
+        "Students, faculty, and administrators can create accounts, update their details, and access personalized information.",
       skeleton: <SkeletonThree />,
       className:
         "col-span-1 lg:col-span-3 lg:border-r  dark:border-neutral-800",
@@ -122,28 +122,28 @@ export const SkeletonThree = () => {
   return (
     <div className="grid grid-cols-2 gap-4 relative mt-20">
       <Image
-        src="/career-guidance1.jpg"
+        src="/user1.jpg"
         alt="header 1"
         width={300}
         height={300}
         className="h-50 w-50 object-cover object-center rounded-sm blur-none group-hover/image:blur-md transition-all duration-200"
       />
       <Image
-        src="/career-guidance2.jpeg"
+        src="/user1.jpg"
         alt="header 2"
         width={300}
         height={300}
         className="h-50 w-50 object-cover object-center rounded-sm blur-none group-hover/image:blur-md transition-all duration-200"
       />
       <Image
-        src="/career-guidance3.jpg"
+        src="/user1.jpg"
         alt="header 3"
         width={300}
         height={300}
         className="h-50 w-50 object-cover object-center rounded-sm blur-none group-hover/image:blur-md transition-all duration-200"
       />
       <Image
-        src="/career-guidance4.jpg"
+        src="/user1.jpg"
         alt="header 4"
         width={300}
         height={300}
