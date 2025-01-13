@@ -39,14 +39,12 @@ export function Testimonials() {
     },
   ];
   return (
-    <div className="py-28 bg-black min-h-screen">
-         <h1 className="text-5xl font-bold dark:text-white text-[#ede8f5]  flex items-center justify-center">
-        Testimonials
-      </h1>
-    <div className="h-screen w-full ">
+  
+       
+    <div className="min-h-screen w-full ">
      
       <AnimatedTestimonials testimonials={testimonials} />
     </div>
-    </div>
+ 
   );
 }

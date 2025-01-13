@@ -1,5 +1,4 @@
 import StreamCardList from "@/components/StreamCardList";
-import TakeQuiz from "@/components/TakeQuizBanner";
 import React from "react";
 
 const Streams = () => {
@@ -18,7 +17,7 @@ const Streams = () => {
       </div>
 
       <StreamCardList />
-      <TakeQuiz />
+      
     </section>
   );
 };

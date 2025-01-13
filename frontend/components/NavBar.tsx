@@ -38,19 +38,19 @@ export function Navbar() {
             <div className="hidden md:flex items-center space-x-6">
               <Link
                 href="/modules"
-                className="text-white hover:text-gray-200 transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors"
               >
                 Modules
               </Link>
               <Link
                 href="/resources"
-                className="text-white hover:text-gray-200 transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors"
               >
                 Resources
               </Link>
               <Link
                 href="/community"
-                className="text-white hover:text-gray-200 transition-colors"
+                className="text-gray-400 hover:text-gray-600 transition-colors"
               >
                 Community
               </Link>
@@ -86,21 +86,21 @@ export function Navbar() {
                 <div className="flex flex-col space-y-4">
                   <Link
                     href="/modules"
-                    className="text-white hover:text-gray-200 transition-colors px-4 py-2"
+                    className="text-gray-400 hover:text-gray-600 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     Modules
                   </Link>
                   <Link
                     href="/resources"
-                    className="text-white hover:text-gray-200 transition-colors px-4 py-2"
+                    className="text-gray-400 hover:text-gray-400 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     Resources
                   </Link>
                   <Link
                     href="/community"
-                    className="text-white hover:text-gray-200 transition-colors px-4 py-2"
+                    className="text-gray-400 hover:text-gray-400 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     Community

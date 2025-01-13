@@ -51,7 +51,6 @@ interface TeamMemberProps {
 const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
   return (
     <div className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform duration-300 hover:scale-105 focus-within:ring-2 focus-within:ring-blue-500">
-      {/* Using Next.js Image component */}
       <Image 
         src={member.image} 
         alt={`${member.name} - ${member.role}`} 
@@ -60,9 +59,9 @@ const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
         className="w-full h-64 object-cover"
       />
       <div className="p-6">
-        <h3 className="text-xl font-semibold text-gray-800">{member.name}</h3>
+        <h3 className="text-xl font-semibold text-gray-700">{member.name}</h3>
         <p className="text-sm text-gray-600 mb-4">{member.role}</p>
-        <p className="text-gray-700 mb-4">{member.description}</p>
+        <p className="text-gray-500 mb-4">{member.description}</p>
         <div className="flex justify-center space-x-4">
           <a href={member.linkedin} className="text-blue-600 hover:text-blue-800 transition-colors duration-300" aria-label={`${member.name}'s LinkedIn profile`}>
             <FaLinkedin size={24} />
@@ -70,7 +69,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
           <a href={member.github} className="text-blue-400 hover:text-blue-600 transition-colors duration-300" aria-label={`${member.name}'s Twitter profile`}>
             <FaGithub size={24} />
           </a>
-          <a href={`mailto:${member.email}`} className="text-gray-600 hover:text-gray-800 transition-colors duration-300" aria-label={`Email ${member.name}`}>
+          <a href={`mailto:${member.email}`} className="text-gray-500 hover:text-gray-800 transition-colors duration-300" aria-label={`Email ${member.name}`}>
             <FaEnvelope size={24} />
           </a>
         </div>
@@ -81,9 +80,9 @@ const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
 
 const AboutUs = () => {
   return (
-    <section className=" min-h-screen py-28 px-4 sm:px-6 lg:px-8" aria-labelledby="team-heading">
+    <section className="bg-black min-h-screen py-28 px-4 sm:px-6 lg:px-8" aria-labelledby="team-heading">
       <div className="max-w-7xl mx-auto">
-        <h2 id="team-heading" className="text-5xl font-bold dark:text-white text-[#ede8f5] text-center mb-12">Meet Our Team</h2>
+        <h2 id="team-heading" className="text-5xl font-bold dark:text-white text-white text-center mb-12">Meet Our Team</h2>
         <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
           {teamMembers.map((member) => (
             <TeamMember key={member.id} member={member} />

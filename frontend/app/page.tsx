@@ -1,8 +1,10 @@
 import AboutUs from "@/components/AboutUs";
-import { FeaturesSection } from "@/components/FeaturesSection";
+import { FeaturesSectionDemo } from "@/components/Demo";
+import Features from "@/components/Features";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import { Services } from "@/components/Services";
+import TakeQuiz from "@/components/TakeQuizBanner";
 import { Testimonials } from "@/components/Testimonials";
 
 export default function Home() {
@@ -16,7 +18,9 @@ export default function Home() {
       </div>
       <div className="w-full pr-0 pl-0 ">
         <Services />
-        <FeaturesSection />
+        <TakeQuiz />
+        <FeaturesSectionDemo />
+        <Features />
         <Testimonials />
         <AboutUs />
       </div>
