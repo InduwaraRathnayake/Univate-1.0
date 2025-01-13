@@ -20,21 +20,21 @@ export function Services() {
   ];
 
   return (
-    <section className="py-28 bg-black min-h-screen" id="about">
+    <section className="py-28 bg-white min-h-screen" id="about">
       <div className="text-center mb-8">
-        <h2 className="text-5xl font-bold dark:text-white text-[#ede8f5] ">
+        <h2 className="text-5xl font-bold dark:text-white text-black ">
           Our Services
         </h2>
-        <p className="text-gray-400 mt-2 text-lg">
+        <p className="text-gray-700 mt-2 text-lg">
           Explore the range of services we offer to guide your success.
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 px-4">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-10 px-4">
         {services.map((service, index) => (
           <div
             key={index}
-            className="max-w-xs w-full group/card mx-auto rounded-lg overflow-hidden shadow-lg"
+            className="max-w-s w-full group/card mx-auto rounded-lg overflow-hidden shadow-lg"
             style={{
               backgroundImage: `url(${service.image})`,
               backgroundSize: "cover",
@@ -50,7 +50,7 @@ export function Services() {
 
               {/* Text Content */}
               <div className="z-10 relative">
-                <h1 className="font-bold text-xl md:text-2xl text-white">
+                <h1 className="font-bold text-2xl md:text-3xl text-white">
                   {service.title}
                 </h1>
                 
