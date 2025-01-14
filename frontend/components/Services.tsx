@@ -20,7 +20,7 @@ export function Services() {
   ];
 
   return (
-    <section className="py-28 bg-white min-h-screen" id="about">
+    <section className="py-28 bg-white min-h-screen" id="services">
       <div className="text-center mb-8">
         <h2 className="text-5xl font-bold dark:text-white text-black ">
           Our Services

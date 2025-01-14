@@ -45,61 +45,59 @@ export const AnimatedTestimonials = ({
   };
 
   return (
-    <div className="py-20 bg-gradient-to-r from-white  to-slate-300 min-h-screen">
+    <div className="py-20 bg-gradient-to-r from-white to-slate-300 min-h-screen px-2">
       <div className="text-center mb-10">
-        <h1 className="text-6 sm:text-6xl font-bold text-black">
+        <h1 className="text-4xl sm:text-5xl font-bold text-black">
           What Our Users Say
         </h1>
-        
       </div>
 
       <div className="relative grid grid-cols-1 md:grid-cols-2 gap-10 max-w-7xl mx-auto">
-      <div className="relative h-[500px] w-full flex items-center justify-center">
-  <AnimatePresence>
-    {testimonials.map((testimonial, index) => (
-      <motion.div
-        key={testimonial.src}
-        initial={{
-          opacity: 0,
-          scale: 0.9,
-          z: -100,
-          rotate: randomRotateY(),
-        }}
-        animate={{
-          opacity: isActive(index) ? 1 : 0.7,
-          scale: isActive(index) ? 1 : 0.95,
-          z: isActive(index) ? 0 : -100,
-          rotate: isActive(index) ? 0 : randomRotateY(),
-          zIndex: isActive(index)
-            ? 999
-            : testimonials.length + 2 - index,
-          y: isActive(index) ? [0, -20, 0] : 0,
-        }}
-        exit={{
-          opacity: 0,
-          scale: 0.9,
-          z: 100,
-          rotate: randomRotateY(),
-        }}
-        transition={{
-          duration: 0.6,
-          ease: "easeInOut",
-        }}
-        className="absolute inset-0 flex items-center justify-center"
-      >
-        <Image
-          src={testimonial.src}
-          alt={testimonial.name}
-          width={450}
-          height={450}
-          draggable={false}
-          className="rounded-2xl object-cover shadow-lg mx-auto"
-        />
-      </motion.div>
-    ))}
-  </AnimatePresence>
-</div>
-
+        <div className="relative h-[500px] w-full flex items-center justify-center">
+          <AnimatePresence>
+            {testimonials.map((testimonial, index) => (
+              <motion.div
+                key={testimonial.src}
+                initial={{
+                  opacity: 0,
+                  scale: 0.9,
+                  z: -100,
+                  rotate: randomRotateY(),
+                }}
+                animate={{
+                  opacity: isActive(index) ? 1 : 0.7,
+                  scale: isActive(index) ? 1 : 0.95,
+                  z: isActive(index) ? 0 : -100,
+                  rotate: isActive(index) ? 0 : randomRotateY(),
+                  zIndex: isActive(index)
+                    ? 999
+                    : testimonials.length + 2 - index,
+                  y: isActive(index) ? [0, -20, 0] : 0,
+                }}
+                exit={{
+                  opacity: 0,
+                  scale: 0.9,
+                  z: 100,
+                  rotate: randomRotateY(),
+                }}
+                transition={{
+                  duration: 0.6,
+                  ease: "easeInOut",
+                }}
+                className="absolute inset-0 flex items-center justify-center"
+              >
+                <Image
+                  src={testimonial.src}
+                  alt={testimonial.name}
+                  width={450}
+                  height={450}
+                  draggable={false}
+                  className="rounded-2xl object-cover shadow-lg mx-auto"
+                />
+              </motion.div>
+            ))}
+          </AnimatePresence>
+        </div>
 
         <div className="flex flex-col justify-center items-center md:items-start space-y-8 text-gray-900">
           <motion.div
@@ -121,8 +119,12 @@ export const AnimatedTestimonials = ({
               ease: "easeInOut",
             }}
           >
-            <h3 className="text-4xl text-gray-700 font-bold mb-5">{testimonials[active].name}</h3>
-            <p className="text-lg text-gray-600">{testimonials[active].designation}</p>
+            <h3 className="text-4xl text-gray-700 font-bold mb-5">
+              {testimonials[active].name}
+            </h3>
+            <p className="text-lg text-gray-600">
+              {testimonials[active].designation}
+            </p>
 
             <motion.p className="text-lg mt-6 text-gray-800 italic">
               {testimonials[active].quote.split(" ").map((word, index) => (

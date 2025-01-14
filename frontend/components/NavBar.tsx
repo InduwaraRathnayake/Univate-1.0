@@ -38,21 +38,21 @@ export function Navbar() {
             <div className="hidden md:flex items-center space-x-6">
               <Link
                 href="/modules"
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                className="text-border-black hover:text-gray-600 transition-colors"
               >
                 Modules
               </Link>
               <Link
-                href="/resources"
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                href="/stream-information-hub"
+                className="text-border-black hover:text-gray-600 transition-colors"
               >
-                Resources
+                Streams
               </Link>
               <Link
-                href="/community"
-                className="text-gray-400 hover:text-gray-600 transition-colors"
+                href="/career-guidance"
+                className="text-border-black hover:text-gray-600 transition-colors"
               >
-                Community
+                Career Guidance
               </Link>
               <div className="flex items-center space-x-2">
                 <Button
@@ -86,24 +86,24 @@ export function Navbar() {
                 <div className="flex flex-col space-y-4">
                   <Link
                     href="/modules"
-                    className="text-gray-400 hover:text-gray-600 transition-colors px-4 py-2"
+                    className="text-border-black hover:text-gray-600 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
                     Modules
                   </Link>
                   <Link
-                    href="/resources"
-                    className="text-gray-400 hover:text-gray-400 transition-colors px-4 py-2"
+                    href="/stream-information-hub"
+                    className="text-border-black hover:text-gray-400 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
-                    Resources
+                    Streams
                   </Link>
                   <Link
-                    href="/community"
-                    className="text-gray-400 hover:text-gray-400 transition-colors px-4 py-2"
+                    href="/career-guidance"
+                    className="text-border-black hover:text-gray-400 transition-colors px-4 py-2"
                     onClick={() => setIsOpen(false)}
                   >
-                    Community
+                    Career Guidance
                   </Link>
                   <hr className="border-white/20" />
 

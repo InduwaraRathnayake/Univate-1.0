@@ -33,7 +33,7 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex relative overflow-hidden animate-gradient bg-gradient-to-r from-[#3D52A0] via-[#7091E6] to-[#EDE8F5] bg-[length:200%_200%]">
+    <div className="min-h-screen flex relative overflow-hidden animate-gradient bg-gradient-to-r from-[#000] to-[#FFF] bg-[length:200%_200%]">
       {/* Left side - Image and tagline */}
       <div className="hidden lg:flex lg:w-1/2 relative">
         <div className="absolute inset-0 bg-black/40 z-10" />
@@ -69,22 +69,27 @@ export default function Login() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="w-full max-w-lg space-y-8 bg-white/50 backdrop-blur-xl p-8 rounded-2xl shadow-xl"
+          className="w-full max-w-lg space-y-8 bg-white backdrop-blur-xl p-8 rounded-2xl shadow-xl"
         >
           <div className="text-center">
             <motion.h2
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-3xl font-bold text-[#3D52E0]"
+              className="text-3xl font-bold text-[#000] flex items-center justify-center space-x-2"
             >
-              Welcome back
+              <span>Welcome back</span>
+              <img
+                src="/logoBadge.png"
+                alt="Logo"
+                className="h-[40px] w-[40px] bg-black rounded-full p-1"
+              />
             </motion.h2>
             <p className="mt-2 text-sm text-gray-600">
               Don&apos;t have an account?{" "}
               <Link
                 href="/signup"
-                className="font-medium text-[#7091E6] hover:text-[#3D52E0] transition-colors"
+                className="font-medium text-gray-600 hover:text-[#000] transition-colors"
               >
                 Sign up
               </Link>

@@ -16,8 +16,8 @@ const Modules = () => {
   };
   return (
     <>
-      <div className="h-full flex flex-col justify-center  items-center px-2">
-        <h2 className=" text-xl text-center sm:text-5xl text-white my-32">
+      <div className="h-full flex flex-col justify-center  items-center px-2 pt-28 pb-[10px]">
+        <h2 className=" text-4xl text-center font-bold sm:text-5xl text-white pb-6">
           Find Your Modules
         </h2>
         <PlaceholdersAndVanishInput
@@ -25,11 +25,11 @@ const Modules = () => {
           onChange={handleChange}
           onSubmit={onSubmit}
         />
-        <div className="max-w-7xl my-20">
+        <div className="max-w-7xl my-10 pt-3">
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-bold text-white text-center"
+            className="text-4xl text-white text-center"
           >
             All Modules
           </motion.h1>
@@ -44,11 +44,11 @@ const Modules = () => {
             >
               <Link href={`/modules/${module.id.toLowerCase()}`}>
                 <div className="bg-white/90 backdrop-blur-lg rounded-xl p-6 hover:shadow-xl transition-all hover:-translate-y-1">
-                  <h2 className="text-xl font-semibold text-[#3D52E0] mb-2">
+                  <h2 className="text-xl font-semibold text-[#000] mb-2">
                     {module.id} {module.name}
                   </h2>
                   <p className="text-gray-600">{module.description}</p>
-                  <div className="mt-4 inline-block px-3 py-1 bg-[#3D52E0]/10 rounded-full text-sm text-[#3D52E0]">
+                  <div className="mt-4 inline-block px-3 py-1 bg-[#000]/10 rounded-full text-sm text-[#000]">
                     Semester {module.semester}
                   </div>
                 </div>
