@@ -40,7 +40,7 @@ const StreamCardList = () => {
   ];
 
   return (
-    <div className="min-h-screen p-4 mt-5">
+    <div className="p-4 mt-5">
       <div className="max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {cardData.map((card) => (

@@ -47,7 +47,7 @@ const Features = () => {
     <div className="container mx-auto px-4 flex justify-center items-center min-h-screen">
       <div className="flex flex-wrap justify-center items-center w-full">
         <div className="w-full md:w-6/12 px-4 text-center md:text-left flex flex-col gap-4 justify-center items-center">
-          <h1 className="text-6xl text-white font-bold mb-4">Features</h1>
+          <h1 className="text-5xl text-white font-bold mb-4">Features</h1>
           <p className="text-2xl text-gray-400 mb-4">
             Discover the Key Features of Our Platform
           </p>

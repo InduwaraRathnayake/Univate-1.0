@@ -9,6 +9,9 @@ export default {
   ],
   theme: {
     extend: {
+      textShadow: {
+        'black-border': '1px 1px 2px black',
+      },
       colors: {
         black: {
           DEFAULT: "#000",
