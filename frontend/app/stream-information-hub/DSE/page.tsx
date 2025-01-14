@@ -13,8 +13,16 @@ import {
   FaCloud,
 } from "react-icons/fa";
 
+const companies = [
+  { name: "Google" },
+  { name: "WS02" },
+  { name: "Microsoft" },
+  { name: "Amazon" },
+  { name: "IFS" },
+  { name: "Codegen" },
+];
+
 const DSE = () => {
-  
   const careers = [
     {
       icon: <FaChartLine />,
@@ -69,13 +77,10 @@ const DSE = () => {
         "Utilize cloud platforms to store, process, and analyze data at scale.",
     },
   ];
-  
 
   return (
-    
     <main>
-     
-      <div className="w-[calc(100%-4rem)] mx-auto rounded-md  h-[30rem] overflow-hidden">
+      <div className="w-[calc(100%-4rem)] mx-auto rounded-md h-[30rem] overflow-hidden">
         <Vortex
           backgroundColor="black"
           className="flex items-center flex-col justify-center px-2 md:px-10 py-4 w-full h-full"
@@ -83,7 +88,7 @@ const DSE = () => {
           <h2 className="text-white text-2xl md:text-6xl font-bold text-center">
             Data Science & Engineering
           </h2>
-          <p className="text-white text-sm md:text-2xl  mt-6 text-center">
+          <p className="text-white text-sm md:text-2xl mt-6 text-center">
             Data Science is a rapidly growing field focused on extracting
             meaningful insights from data. It integrates statistics, machine
             learning, and data visualization with programming and domain
@@ -91,9 +96,9 @@ const DSE = () => {
           </p>
         </Vortex>
       </div>
-    
+
       <section className="bg-black text-white p-8 min-h-screen">
-        <div className="text-center ">
+        <div className="text-center">
           <h1 className="text-4xl font-bold mt-10 mb-10">
             Empowering Data Science Professionals
           </h1>
@@ -111,7 +116,46 @@ const DSE = () => {
           ))}
         </div>
       </section>
-      
+
+      <section className="p-8 bg-white overflow-hidden ">
+        <h2 className="text-4xl font-bold text-black mb-10 text-center">
+          Companies
+        </h2>
+        <div className="relative flex items-center mt-10 mb-10">
+          <div
+            className="flex gap-4 animate-scroll"
+            style={{
+              animation: "scroll 20s linear infinite",
+              whiteSpace: "nowrap",
+            }}
+          >
+            {[...companies, ...companies].map((category, index) => (
+              <div
+                key={index}
+                className="bg-black rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                role="button"
+                aria-label={`Shop ${category.name}`}
+                style={{ minWidth: "200px" }}
+              >
+                <span className="text-xl font-medium text-white">
+                  {category.name}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes scroll {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-50%);
+            }
+          }
+        `}</style>
+      </section>
     </main>
   );
 };
