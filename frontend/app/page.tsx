@@ -5,7 +5,7 @@ import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
 import { Services } from "@/components/Services";
 import TakeQuiz from "@/components/TakeQuizBanner";
-import { Testimonials } from "@/components/Testimonials";
+import Testimonial from "@/components/Testimonial";
 
 export default function Home() {
   return (
@@ -21,7 +21,7 @@ export default function Home() {
         <TakeQuiz />
         <FeaturesSectionDemo />
         <Features />
-        <Testimonials />
+        <Testimonial/>
         <AboutUs />
       </div>
     </main>
