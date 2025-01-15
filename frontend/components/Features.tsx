@@ -44,14 +44,14 @@ const Features = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4 flex justify-center items-center min-h-screen">
+    <div className="container mx-auto px-4 flex justify-center items-center min-h-screen py-28">
       <div className="flex flex-wrap justify-center items-center w-full">
-        <div className="w-full md:w-6/12 px-4 text-center md:text-left flex flex-col gap-4 justify-center items-center">
+        <div className="w-full md:w-6/12 px-4 text-center md:text-left flex flex-col gap-4 justify-center items-left">
           <h1 className="text-5xl text-white font-bold mb-4">Features</h1>
           <p className="text-2xl text-gray-400 mb-4">
             Discover the Key Features of Our Platform
           </p>
-          <p className="mb-4 text-gray-500 mx-10 sm:mx-4">
+          <p className="mb-4 text-gray-500">
             Explore your path with our interactive quiz, GPA tracker,
             digitalized handbook, and tailored career guidance—all on a
             user-friendly platform designed to simplify your academic journey.
