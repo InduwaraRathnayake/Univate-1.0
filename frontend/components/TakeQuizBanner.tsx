@@ -3,8 +3,15 @@
 import React from "react";
 import { FaArrowRight } from "react-icons/fa";
 import Button from "./ui/button";
+import { useRouter } from "next/navigation";
 
 const TakeQuiz = () => {
+  const router = useRouter();
+
+  const handleTakeQuiz = () => {
+    router.push("/quiz");
+  };
+
   return (
     <div
       className="min-h-screen flex items-center"
@@ -16,7 +23,7 @@ const TakeQuiz = () => {
         backgroundAttachment: "fixed", 
       }}
     >
-      <div className="max-w-lg p-6 bg-white/90 shadow-lg rounded-lg ">
+      <div className="max-w-lg p-6 bg-white/90 shadow-lg rounded-lg ml-2 mr-2">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
           Unsure About Your Path? Let's Decide Together!
         </h2>
@@ -27,7 +34,7 @@ const TakeQuiz = () => {
           your passion truly lies.
         </p>
         <div>
-          <Button title="Take the Quiz" icon={<FaArrowRight />} position="right" />
+          <Button title="Take the Quiz" icon={<FaArrowRight />} position="right"  handleClick={handleTakeQuiz}/>
         </div>
       </div>
     </div>
