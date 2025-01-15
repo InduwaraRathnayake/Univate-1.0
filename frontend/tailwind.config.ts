@@ -78,8 +78,14 @@ export default {
       animation: {
         shimmer: "shimmer 2s linear infinite",
         gradient: "gradient 4s ease infinite",
+        shadowSwing: "shadowSwing 2s infinite ease-in-out",
       },
       keyframes: {
+        shadowSwing: {
+          "0%": { transform: "translate(-5px, 5px) scale(1.05)", opacity: "0.5" },
+          "50%": { transform: "translate(5px, -5px) scale(1.1)", opacity: "0.7" },
+          "100%": { transform: "translate(-5px, 5px) scale(1.05)", opacity: "0.5" },
+        },
         shimmer: {
           from: {
             backgroundPosition: "0 0",
