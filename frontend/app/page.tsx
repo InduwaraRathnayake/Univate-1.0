@@ -1,4 +1,5 @@
 import AboutUs from "@/components/AboutUs";
+import ContactUsPage from "@/components/ContactUs";
 import { FeaturesSectionDemo } from "@/components/Demo";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
@@ -23,6 +24,7 @@ export default function Home() {
         <Features />
         <Testimonial/>
         <AboutUs />
+        <ContactUsPage />
       </div>
     </main>
   );

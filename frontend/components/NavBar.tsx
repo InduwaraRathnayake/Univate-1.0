@@ -54,6 +54,13 @@ export function Navbar() {
               >
                 Career Guidance
               </Link>
+              <Link
+                    href="/#contact"
+                    className="text-border-black hover:text-gray-600 transition-colors"
+                   
+                  >
+                    Contact
+                  </Link>
               <div className="flex items-center space-x-2">
                 <Button
                   title="Sign In"
@@ -104,6 +111,13 @@ export function Navbar() {
                     onClick={() => setIsOpen(false)}
                   >
                     Career Guidance
+                  </Link>
+                  <Link
+                    href="#contact"
+                    className="text-border-black hover:text-gray-400 transition-colors px-4 py-2"
+                    onClick={() => setIsOpen(false)}
+                  >
+                    Contact
                   </Link>
                   <hr className="border-white/20" />
 
