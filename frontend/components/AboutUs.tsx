@@ -6,7 +6,8 @@ const teamMembers = [
   {
     id: 3,
     name: 'Mike Johnson',
-    role: 'CSE Undergraduate',
+    role: 'CSE Undergraduate' ,
+    university:' University of Moratuwa',
     image: '/member.jpg',
     description: 'Creative mind behind our stunning visual experiences.',
     linkedin: 'https://www.linkedin.com/in/induwara-rathnayake/',
@@ -17,6 +18,7 @@ const teamMembers = [
     id: 4,
     name: 'Mike Johnson',
     role: 'CSE Undergraduate',
+    university:' University of Moratuwa',
     image: '/member.jpg',
     description: 'Strategic thinker driving our brand to new heights.',
     linkedin: 'https://www.linkedin.com/in/pasindu-ravishan-74281629b/',
@@ -27,6 +29,7 @@ const teamMembers = [
     id: 6,
     name: 'Mike Johnson',
     role: 'CSE Undergraduate',
+    university:' University of Moratuwa',
     image: '/member.jpg',
     description: 'Empathetic researcher uncovering deep user insights.',
     linkedin: 'www.linkedin.com/in/pathumi-ranasinghe',
@@ -40,6 +43,7 @@ interface TeamMemberProps {
     id: number;
     name: string;
     role: string;
+    university: string;
     image: string;
     description: string;
     linkedin: string;
@@ -60,7 +64,8 @@ const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
       />
       <div className="p-6">
         <h3 className="text-xl font-semibold text-gray-700">{member.name}</h3>
-        <p className="text-sm text-gray-600 mb-4">{member.role}</p>
+        <p className="text-sm text-gray-600 mb-2">{member.role}</p>
+        <p className="text-md text-gray-800 mb-3">{member.university}</p>
         <p className="text-gray-500 mb-4">{member.description}</p>
         <div className="flex justify-center space-x-4">
           <a href={member.linkedin} className="text-blue-600 hover:text-blue-800 transition-colors duration-300" aria-label={`${member.name}'s LinkedIn profile`}>
