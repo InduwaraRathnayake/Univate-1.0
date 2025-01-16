@@ -8,6 +8,13 @@ import { TextGenerateEffect } from "./ui/text-generate-effect";
 const Hero = () => {
   const [activeLayer, setActiveLayer] = useState(1);
 
+  const smoothScroll = () => {
+    const aboutSection = document.getElementById("about");
+    if (aboutSection) {
+      aboutSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   const layers = [
     {
       id: 1,
@@ -93,17 +100,19 @@ const Hero = () => {
                 transition={{ delay: 0.8 }}
                 className="flex gap-6 items-center"
               >
-                <a href="#about">
-                  <button className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-opacity-90 transition-all flex items-center gap-2">
-                    Get Started <FaArrowDown />
-                  </button>
-                </a>
+                <button
+                  onClick={smoothScroll}
+                  className="bg-white text-black px-8 py-4 rounded-full font-semibold hover:bg-opacity-90 transition-all flex items-center gap-2"
+                >
+                  Get Started <FaArrowDown />
+                </button>
                 {index < layers.length - 1 && (
                   <button
                     onClick={() => setActiveLayer(layer.id + 1)}
                     className="text-white flex items-center gap-2 hover:text-gray-300 transition-colors animate-pulse"
                   >
-                    Explore More <FaLongArrowAltRight className="animate-pulse" />
+                    Explore More{" "}
+                    <FaLongArrowAltRight className="animate-pulse" />
                   </button>
                 )}
               </motion.div>
