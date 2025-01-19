@@ -1,0 +1,111 @@
+{
+    "moduleCode": "CS2053",
+    "moduleTitle": "Computer Architecture",
+    "semester": [3],
+    "intake": "2020 onwards",
+    "compulsoryOrElective": "Compulsory",
+    "gpaOrNgpa": "GPA",
+    "hours_per_week": {
+      "lecture": 2,
+      "lab_tutes": 2
+    },
+    "credits": 3,
+    "prerequisitesOrCorequisites": ["CS1050"],
+    "evaluation": {
+      "CA": 40,
+      "WE": 60
+    },
+    "learning_outcomes": [
+      "Draw the schematic diagrams of the functional components in a computer system",
+      "Describe how a program is executed in a computer",
+      "Explain the operation of memory hierarchy, input/output and the related concepts",
+      "Develop a simple microprocessor with a limited instruction set",
+      "Evaluate the performance enhancement techniques used in computer systems"
+    ],
+    "syllabus_outline": 
+        {   
+            "syllabus_outline_desc": "",
+            "content": [
+                {
+                    "topic": "Introduction to computer architecture",
+                    "subtopics": [
+                      "Design goals, high-level design, architectural differences programming levels"
+                    ]
+                  },
+                  {
+                    "topic": "ALU design",
+                    "subtopics": [
+                      "Half and Full adders",
+                      "Encoders",
+                      "Multiplexers"
+                    ]
+                  },
+                  {
+                    "topic": "Registers",
+                    "subtopics": [
+                      "Flip-flops",
+                      "Registers",
+                      "Counters",
+                      "State diagrams",
+                      "Clocks"
+                    ]
+                  },
+                  {
+                    "topic": "Instruction Set Architecture (ISA)",
+                    "subtopics": [
+                      "Micro operations",
+                      "Assembly instructions",
+                      "Addressing modes",
+                      "Harvard vs. Von Neumann architecture",
+                      "RISC/CISC"
+                    ]
+                  },
+                  {
+                    "topic": "Data Representation",
+                    "subtopics": [
+                      "Number systems",
+                      "Character representations"
+                    ]
+                  },
+                  {
+                    "topic": "Busses"
+                  },
+                  {
+                    "topic": "Memory",
+                    "subtopics": [
+                      "Memory hierarchy",
+                      "Types of memory",
+                      "Addressing modes",
+                      "Stack"
+                    ]
+                  },
+                  {
+                    "topic": "Caching",
+                    "subtopics": [
+                      "Locality",
+                      "Associativity",
+                      "Optimizations"
+                    ]
+                  },
+                  {
+                    "topic": "Input/Output",
+                    "subtopics": [
+                      "Devices",
+                      "Polling vs. Interrupts",
+                      "DMA"
+                    ]
+                  },
+                  {
+                    "topic": "Performance enhancements in modern computing systems",
+                    "subtopics": [
+                      "Pipelining and Amdahl’s law",
+                      "Hyper-threading",
+                      "Multi-core",
+                      "Many-core"
+                    ]
+                  }
+            
+            ]
+        }
+  }
+  
