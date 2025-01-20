@@ -1,41 +1,42 @@
 package com.univate.univate01.controller;
 
 import com.univate.univate01.model.User;
-import com.univate.univate01.service.UserService;
-import com.univate.univate01.util.JwtUtil;
+import com.univate.univate01.repository.UserRepository;
+import com.univate.univate01.util.JwtHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
-public class AuthController{
+public class AuthController {
 
     @Autowired
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private PasswordEncoder passwordEncoder;
 
     @Autowired
-    private JwtUtil jwtUtil;
+    private JwtHelper jwtHelper;
 
     @PostMapping("/register")
-    public String register(@RequestBody User user) {
-        userService.saveUser(user);
+    public String registerUser(@RequestBody User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword())); // Hash password
+        userRepository.save(user);
         return "User registered successfully!";
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User user) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
-        );
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        String token = jwtUtil.generateToken(user.getUsername());
-        return "Bearer " + token;
+    public String authenticateUser(@RequestBody User user) {
+        User existingUser = userRepository.findByUsername(user.getUsername())
+                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
+
+        if (passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
+            // Generate and return JWT token
+            return jwtHelper.generateToken(existingUser);
+        } else {
+            throw new RuntimeException("Invalid username or password");
+        }
     }
 }

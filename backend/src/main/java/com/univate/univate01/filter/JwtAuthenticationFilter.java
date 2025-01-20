@@ -1,0 +1,80 @@
+package com.univate.univate01.filter;
+
+import com.univate.univate01.service.CustomUserDetailsService;
+import com.univate.univate01.util.JwtHelper;
+import io.jsonwebtoken.ExpiredJwtException;
+import java.lang.IllegalArgumentException;
+import io.jsonwebtoken.MalformedJwtException;
+
+//import org.hibernate.validator.internal.util.stereotypes.Lazy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.context.annotation.Scope;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
+
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+@Component
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    private final CustomUserDetailsService userDetailService;
+    private final JwtHelper jwtHelper;
+
+    public JwtAuthenticationFilter(CustomUserDetailsService userDetailService, JwtHelper jwtHelper) {
+        this.userDetailService = userDetailService;
+        this.jwtHelper = jwtHelper;
+    }
+
+    @Override
+    protected void doFilterInternal(@SuppressWarnings("null") HttpServletRequest request, @SuppressWarnings("null") HttpServletResponse response, @SuppressWarnings("null") FilterChain filterChain)
+            throws ServletException, IOException {
+
+        String requestTokenHeader = request.getHeader("Authorization");
+        logger.info("Authorization Header: {}", requestTokenHeader);
+
+        String username = null;
+        String jwtToken = null;
+
+        if (requestTokenHeader != null && requestTokenHeader.startsWith("Bearer ")) {
+            jwtToken = requestTokenHeader.substring(7);
+            try {
+                username = jwtHelper.getUsernameFromToken(jwtToken);
+            } catch (IllegalArgumentException e) {
+                logger.error("Unable to get JWT Token");
+            } catch (ExpiredJwtException e) {
+                logger.error("JWT Token has expired");
+            } catch (MalformedJwtException e) {
+                logger.error("Invalid JWT Token");
+            }
+        } else {
+            logger.warn("JWT Token does not begin with Bearer String");
+        }
+
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            UserDetails userDetails = this.userDetailService.loadUserByUsername(username);
+
+            if (jwtHelper.validateToken(jwtToken, userDetails)) {
+                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                        userDetails, null, userDetails.getAuthorities());
+                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                logger.error("JWT Token validation failed");
+            }
+        }
+
+        filterChain.doFilter(request, response);
+    }
+}
