@@ -24,6 +24,7 @@ public class Course {
     private String compulsoryOrElective;
     private String gpaOrNgpa;
     private int credits;
+    private String description;
 
     private List<String> syllabusOutlines; // Can be multiple
     private List<String> prerequisitesOrCorequisites;
