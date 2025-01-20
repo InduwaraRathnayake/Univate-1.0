@@ -18,4 +18,8 @@ public class User {
     private String username;
     private String email;
     private String password;
+
+    public User orElse(User other) {
+        return this != null ? this : other;
+    }
 }
