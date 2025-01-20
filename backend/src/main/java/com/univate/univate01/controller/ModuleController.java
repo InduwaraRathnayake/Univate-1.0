@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +19,7 @@ import com.univate.univate01.model.Course.Course;
 import com.univate.univate01.service.ModuleService;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:3000") 
 @RequestMapping("/api/modules") // Use a descriptive path for the resource
 public class ModuleController {
 
@@ -29,12 +31,17 @@ public class ModuleController {
         return moduleService.getAllModules();
     }
 
-    @GetMapping("/{moduleCode}")
-    public ResponseEntity<Course> getModuleByCode(@PathVariable String moduleCode) {
-        Optional<Course> module = moduleService.getModuleById(moduleCode);
-        return module.map(ResponseEntity::ok)
-                     .orElse(ResponseEntity.notFound().build());
+    @GetMapping("/{text}")
+    public List<Course> search(@PathVariable String text) {
+        return moduleService.searchModule(text);
     }
+
+    // @GetMapping("/{moduleCode}")
+    // public ResponseEntity<Course> getModuleByCode(@PathVariable String moduleCode) {
+    //     Optional<Course> module = moduleService.getModuleById(moduleCode);
+    //     return module.map(ResponseEntity::ok)
+    //             .orElse(ResponseEntity.notFound().build());
+    // }
 
     @PostMapping
     public ResponseEntity<Course> addModule(@RequestBody Course course) {
@@ -46,7 +53,7 @@ public class ModuleController {
     public ResponseEntity<Course> updateModule(@PathVariable String moduleCode, @RequestBody Course course) {
         Optional<Course> updatedCourse = moduleService.updateModule(moduleCode, course);
         return updatedCourse.map(ResponseEntity::ok)
-                            .orElse(ResponseEntity.notFound().build());
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{moduleCode}")
@@ -55,4 +62,3 @@ public class ModuleController {
         return isDeleted ? ResponseEntity.noContent().build() : ResponseEntity.notFound().build();
     }
 }
-
