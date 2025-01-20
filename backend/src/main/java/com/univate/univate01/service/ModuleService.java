@@ -2,6 +2,8 @@ package com.univate.univate01.service;
 
 import com.univate.univate01.model.Course.Course;
 import com.univate.univate01.repository.ModuleRepository;
+import com.univate.univate01.repository.SearchRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +16,17 @@ public class ModuleService {
     @Autowired
     private ModuleRepository moduleRepository;
 
+    @Autowired
+    private SearchRepository searchRepository;
+
     // Get all modules
     public List<Course> getAllModules() {
         return moduleRepository.findAll();
+    }
+
+    // Search for a module
+    public List<Course> searchModule(String text){
+        return searchRepository.findByText(text);
     }
 
     // Get a specific module by module code
