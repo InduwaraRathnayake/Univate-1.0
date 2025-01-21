@@ -21,7 +21,7 @@ public class Course {
     @Id
     private String id;
 
-    @Field("module_code")
+    @Field("moduleCode")
     @JsonProperty("moduleCode")
     private String moduleCode;
 
@@ -46,15 +46,15 @@ public class Course {
     @JsonProperty("prerequisitesOrCorequisites")
     private List<String> prerequisitesOrCorequisites;
 
-    @JsonProperty("learning_outcomes")
+    @JsonProperty("learningOutcomes")
     private List<String> learningOutcomes;
 
-    @JsonProperty("hours_per_week")
+    @JsonProperty("hoursPerWeek")
     private HoursPerWeek hoursPerWeek;
 
     @JsonProperty("evaluation")
     private Evaluation evaluation;
 
-    @JsonProperty("syllabus_outline")
+    @JsonProperty("syllabusOutline")
     private SyllabusOutline syllabusOutline;
 }

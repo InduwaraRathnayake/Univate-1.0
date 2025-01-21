@@ -31,9 +31,16 @@ public class ModuleController {
         return moduleService.getAllModules();
     }
 
-    @GetMapping("/{text}")
+    @GetMapping("/search/{text}")
     public List<Course> search(@PathVariable String text) {
         return moduleService.searchModule(text);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getModuleByCode(@PathVariable String id) {
+        Optional<Course> module = moduleService.getModuleById(id);
+        return module.map(ResponseEntity::ok)
+                     .orElse(ResponseEntity.notFound().build());
     }
 
     @PostMapping
