@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +20,7 @@ import com.univate.univate01.service.ModuleService;
 
 @RestController
 @RequestMapping("/api/modules") // Use a descriptive path for the resource
+@CrossOrigin
 public class ModuleController {
 
     @Autowired
@@ -38,7 +40,20 @@ public class ModuleController {
 
     @PostMapping
     public ResponseEntity<Course> addModule(@RequestBody Course course) {
+        System.out.println();
+        System.out.println();
+        System.out.println("Passed Course");
+        System.out.println();
+        System.out.println();
+        System.out.println(course);
         Course savedCourse = moduleService.addModule(course);
+
+        System.out.println();
+        System.out.println();
+        System.out.println("add Course");
+        System.out.println();
+        System.out.println();
+        System.out.println(savedCourse);
         return ResponseEntity.ok(savedCourse);
     }
 
