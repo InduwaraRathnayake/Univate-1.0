@@ -19,7 +19,7 @@ import com.univate.univate01.model.Course.Course;
 import com.univate.univate01.service.ModuleService;
 
 @RestController
-@RequestMapping("/api/modules") // Use a descriptive path for the resource
+@RequestMapping("/api/modules") 
 @CrossOrigin
 public class ModuleController {
 
@@ -31,11 +31,17 @@ public class ModuleController {
         return moduleService.getAllModules();
     }
 
-    @GetMapping("/{text}")
+    @GetMapping("/search/{text}")
     public List<Course> search(@PathVariable String text) {
         return moduleService.searchModule(text);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<Course> getModuleByCode(@PathVariable String id) {
+        Optional<Course> module = moduleService.getModuleById(id);
+        return module.map(ResponseEntity::ok)
+                     .orElse(ResponseEntity.notFound().build());
+    }
     @PostMapping
     public ResponseEntity<Course> addModule(@RequestBody Course course) {
         Course savedCourse = moduleService.addModule(course);

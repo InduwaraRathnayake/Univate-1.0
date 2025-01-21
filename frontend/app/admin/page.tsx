@@ -70,12 +70,21 @@ export default function AdminPage() {
   });
 
   const {
+    fields: semesterFields,
+    append: appendSemester,
+    remove: removeSemester,
+  } = useFieldArray({
+    control,
+    name: "syllabus_outline.content",
+  });
+
+  const {
     fields: prerequisiteFields,
     append: appendPrerequisite,
     remove: removePrerequisite,
   } = useFieldArray({
     control,
-    name: "prerequisitesOrCorequisites",
+    name: "syllabus_outline.content",
   });
 
   const {
@@ -171,14 +180,34 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <Label htmlFor="semester">Semester</Label>
-                <Input
-                  type="number"
-                  {...register("semester.0", { valueAsNumber: true })}
-                  min={1}
-                  max={8}
-                  defaultValue={3}
-                />
+                <Label>Semesters</Label>
+                <div className="space-y-4">
+                  {semesterFields.map((field, index) => (
+                    <div key={field.id} className="flex gap-2">
+                      <Input
+                        type="number"
+                        {...register(`semester.${index}`, {
+                          valueAsNumber: true,
+                        })}
+                        placeholder={`Semester ${index + 1}`}
+                        min={1}
+                        max={8}
+                      />
+                      <Button
+                        title=""
+                        icon={<Minus className="h-4 w-4" />}
+                        handleClick={() => removeSemester(index)}
+                        position="left"
+                      />
+                    </div>
+                  ))}
+                  <Button
+                    title="Add Semester"
+                    icon={<Plus className="h-4 w-4 mr-2" />}
+                    handleClick={() => appendSemester({ topic: "", subtopics: [""] })} 
+                    position="left"
+                  />
+                </div>
               </div>
 
               <div>
@@ -275,7 +304,9 @@ export default function AdminPage() {
                 <Button
                   title="Add Prerequisite"
                   icon={<Plus className="h-4 w-4 mr-2" />}
-                  handleClick={() => appendPrerequisite("")}
+                  handleClick={() =>
+                    appendPrerequisite({ topic: "", subtopics: [""] })
+                  }
                   position="left"
                 />
               </div>
@@ -327,7 +358,9 @@ export default function AdminPage() {
                 <Button
                   title="Add Learning Outcome"
                   icon={<Plus className="h-4 w-4 mr-2" />}
-                  handleClick={() => appendLearningOutcome("")}
+                  handleClick={() =>
+                    appendLearningOutcome({ topic: "", subtopics: [""] })
+                  }
                   position="left"
                 />
               </div>

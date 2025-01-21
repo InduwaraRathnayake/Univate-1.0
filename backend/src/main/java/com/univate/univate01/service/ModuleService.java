@@ -30,8 +30,8 @@ public class ModuleService {
     }
 
     // Get a specific module by module code
-    public Optional<Course> getModuleById(String moduleCode) {
-        return moduleRepository.findById(moduleCode);
+    public Optional<Course> getModuleById(String id) {
+        return moduleRepository.findById(id);
     }
 
     // Add a new module
