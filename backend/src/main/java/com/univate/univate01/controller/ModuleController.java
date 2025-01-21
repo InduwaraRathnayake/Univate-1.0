@@ -19,7 +19,6 @@ import com.univate.univate01.model.Course.Course;
 import com.univate.univate01.service.ModuleService;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:3000") 
 @RequestMapping("/api/modules") // Use a descriptive path for the resource
 @CrossOrigin
 public class ModuleController {
@@ -37,29 +36,9 @@ public class ModuleController {
         return moduleService.searchModule(text);
     }
 
-    // @GetMapping("/{moduleCode}")
-    // public ResponseEntity<Course> getModuleByCode(@PathVariable String moduleCode) {
-    //     Optional<Course> module = moduleService.getModuleById(moduleCode);
-    //     return module.map(ResponseEntity::ok)
-    //             .orElse(ResponseEntity.notFound().build());
-    // }
-
     @PostMapping
     public ResponseEntity<Course> addModule(@RequestBody Course course) {
-        System.out.println();
-        System.out.println();
-        System.out.println("Passed Course");
-        System.out.println();
-        System.out.println();
-        System.out.println(course);
         Course savedCourse = moduleService.addModule(course);
-
-        System.out.println();
-        System.out.println();
-        System.out.println("add Course");
-        System.out.println();
-        System.out.println();
-        System.out.println(savedCourse);
         return ResponseEntity.ok(savedCourse);
     }
 
