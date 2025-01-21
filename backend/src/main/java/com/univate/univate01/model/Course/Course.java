@@ -4,6 +4,9 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,20 +19,42 @@ import lombok.NoArgsConstructor;
 public class Course {
 
     @Id
-    private String moduleCode; // Primary Key
+    private String id;
 
+    @Field("module_code")
+    @JsonProperty("moduleCode")
+    private String moduleCode;
+
+    @JsonProperty("moduleTitle")
     private String moduleTitle;
-    private List<Integer> semester; // Can be multiple
-    private String intake;
-    private String compulsoryOrElective;
-    private String gpaOrNgpa;
-    private int credits;
-    private String description;
 
-    private List<String> syllabusOutlines; // Can be multiple
+    @JsonProperty("semester")
+    private List<Integer> semester; 
+
+    @JsonProperty("intake")
+    private String intake;
+
+    @JsonProperty("compulsoryOrElective")
+    private String compulsoryOrElective;
+
+    @JsonProperty("gpaOrNgpa")
+    private String gpaOrNgpa;
+
+    @JsonProperty("credits")
+    private int credits;
+
+    @JsonProperty("prerequisitesOrCorequisites")
     private List<String> prerequisitesOrCorequisites;
+
+    @JsonProperty("learning_outcomes")
     private List<String> learningOutcomes;
 
+    @JsonProperty("hours_per_week")
     private HoursPerWeek hoursPerWeek;
+
+    @JsonProperty("evaluation")
     private Evaluation evaluation;
+
+    @JsonProperty("syllabus_outline")
+    private SyllabusOutline syllabusOutline;
 }
