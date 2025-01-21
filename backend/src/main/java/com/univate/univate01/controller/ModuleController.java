@@ -42,7 +42,6 @@ public class ModuleController {
         return module.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());
     }
-
     @PostMapping
     public ResponseEntity<Course> addModule(@RequestBody Course course) {
         Course savedCourse = moduleService.addModule(course);

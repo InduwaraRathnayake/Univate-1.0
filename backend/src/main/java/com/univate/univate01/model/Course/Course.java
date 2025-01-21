@@ -21,7 +21,6 @@ public class Course {
     @Id
     private String id;
 
-    @Field("moduleCode")
     @JsonProperty("moduleCode")
     private String moduleCode;
 

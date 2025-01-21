@@ -93,7 +93,7 @@ export default function AdminPage() {
     remove: removeLearningOutcome,
   } = useFieldArray({
     control,
-    name: "syllabus_outline.content",
+    name: "learning_outcomes",
   });
 
   const {
