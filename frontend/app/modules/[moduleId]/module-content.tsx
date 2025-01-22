@@ -138,6 +138,8 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
             </section>
 
             <section className="mb-8">
+
+          
               <h2 className="text-xl font-semibold text-black mb-3">
                 Syllabus Outline
               </h2>
@@ -169,6 +171,7 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
                 </ul>
               </div>
             </section>
+
             <section>
               <h2 className="text-xl font-semibold text-black mb-3">
                 Hours per Week

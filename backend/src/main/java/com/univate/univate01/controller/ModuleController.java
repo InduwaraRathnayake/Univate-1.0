@@ -42,6 +42,15 @@ public class ModuleController {
         return module.map(ResponseEntity::ok)
                      .orElse(ResponseEntity.notFound().build());
     }
+
+    @GetMapping("/sem/{semester}")
+    public List<Course> getModuleBySemester(@PathVariable int semester) {
+        List <Course> courses = moduleService.getModuleBySemester(semester);
+        System.out.println("\nCourses at controller: "+courses);
+        return courses;
+        
+    }
+
     @PostMapping
     public ResponseEntity<Course> addModule(@RequestBody Course course) {
         Course savedCourse = moduleService.addModule(course);

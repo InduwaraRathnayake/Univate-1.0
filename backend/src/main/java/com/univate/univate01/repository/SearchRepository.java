@@ -10,4 +10,5 @@ import com.univate.univate01.model.Course.Course;
 public interface SearchRepository {
     
     List<Course> findByText(String text);
+    List<Course> findBySemester(int semester);
 }
