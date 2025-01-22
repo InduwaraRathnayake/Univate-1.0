@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaRocket } from "react-icons/fa";
 
 const categories = [
@@ -13,72 +13,83 @@ const categories = [
   { id: 8, name: "Semester 8", icon: FaRocket },
 ];
 
-const modulesBySemester: { [key: number]: string[] } = {
-  1: [
-    "CE1023 : Fluid Mechanics",
-    "CS1033 : Programming Fundamentals",
-    "EE1040 : Electrical Fundamentals",
-  ],
-  2: [
-    "MA1020 : Mathematics 2",
-    "PH1020 : Physics 2",
-    "CS1050 : Data Structures",
-  ],
-  3: [
-    "MA2010 : Mathematics 3",
-    "EE1010 : Electronics 1",
-    "CS2010 : Algorithms",
-  ],};
-
-const grades = [
-  "A+",
-  "A",
-  "A-",
-  "B+",
-  "B",
-  "B-",
-  "C+",
-  "C",
-  "C-",
-  "I-we",
-  "I-ca",
-  "F",
-];
+const grades = ["A+", "A", "A-", "B+", "B", "B-", "C+", "C", "C-", "I-we", "I-ca", "F"];
 
 const gradeToGPA: { [key: string]: number } = {
   "A+": 4.0,
-  A: 4.0,
+  "A": 4.0,
   "A-": 3.7,
   "B+": 3.3,
-  B: 3.0,
+  "B": 3.0,
   "B-": 2.7,
   "C+": 2.3,
-  C: 2.0,
+  "C": 2.0,
   "C-": 1.7,
-  F: 0.0,
+  "I-we": 0,
+  "I-ca": 0,
+  "F": 0,
 };
 
 const Page = () => {
   const [selectedSemester, setSelectedSemester] = useState<number | null>(null);
+  const [modules, setModules] = useState<
+    {
+      moduleTitle: string;
+      moduleCode: string;
+      credits: number;
+    }[]
+  >([]);
   const [selectedModules, setSelectedModules] = useState<string[]>([]);
-  const [moduleGrades, setModuleGrades] = useState<{ [key: string]: string }>(
-    {}
-  );
+  const [moduleGrades, setModuleGrades] = useState<{ [key: string]: string }>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleGradeChange = (module: string, grade: string) => {
     setModuleGrades((prev) => ({ ...prev, [module]: grade }));
   };
 
   const calculateGPA = () => {
-    const gradeValues = Object.values(moduleGrades)
-      .map((grade) => gradeToGPA[grade] || 0)
-      .filter((value) => value > 0);
+    let totalCredits = 0;
+    let weightedSum = 0;
 
-    if (!gradeValues.length) return 0;
+    modules.forEach((module) => {
+      if (selectedModules.includes(module.moduleCode)) {
+        const grade = moduleGrades[module.moduleCode];
+        const gradeValue = gradeToGPA[grade] || 0;
+        const credit = module.credits;
 
-    const totalGPA = gradeValues.reduce((sum, value) => sum + value, 0);
-    return (totalGPA / gradeValues.length).toFixed(2);
+        if (gradeValue > 0) {
+          weightedSum += gradeValue * credit;
+          totalCredits += credit;
+        }
+      }
+    });
+
+    if (totalCredits === 0) return 0;
+    return (weightedSum / totalCredits).toFixed(2);
   };
+
+  useEffect(() => {
+    if (selectedSemester) {
+      const fetchModules = async () => {
+        setLoading(true);
+        try {
+          console.log("Fetching modules for semester", selectedSemester);
+          const response = await fetch(
+            `http://localhost:8080/api/modules/sem/${selectedSemester}`
+          );
+          if (!response.ok) throw new Error("Failed to fetch modules");
+          const data = await response.json();
+          console.log(data);
+          setModules(data);
+        } catch (error) {
+          console.error("Error fetching modules:", error);
+        } finally {
+          setLoading(false);
+        }
+      };
+      fetchModules();
+    }
+  }, [selectedSemester]);
 
   return (
     <div
@@ -121,85 +132,80 @@ const Page = () => {
               <h2 className="text-4xl font-bold text-white text-center mb-8">
                 Semester {selectedSemester} - Select Modules
               </h2>
-              <input
-                type="text"
-                placeholder="Search modules..."
-                className="w-2/3 max-w-lg mb-6 p-3 rounded-lg shadow-md mx-auto"
-                onChange={(e) => {
-                  const term = e.target.value.toLowerCase();
-                  setSelectedModules(
-                    modulesBySemester[selectedSemester]?.filter((module) =>
-                      module.toLowerCase().includes(term)
-                    ) || []
-                  );
-                }}
-              />
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {modulesBySemester[selectedSemester]?.map((module) => (
-                  <div
-                    key={module}
-                    className={`p-4 border rounded-lg cursor-pointer ${
-                      selectedModules.includes(module)
-                        ? "bg-gray-400 text-white"
-                        : "bg-white"
-                    }`}
-                    onClick={() =>
-                      setSelectedModules((prev) =>
-                        prev.includes(module)
-                          ? prev.filter((m) => m !== module)
-                          : [...prev, module]
-                      )
-                    }
-                  >
-                    {module}
-                  </div>
-                ))}
-              </div>
-              {selectedModules.length > 0 && (
+              {loading ? (
+                <div className="text-center text-white">Loading modules...</div>
+              ) : (
                 <>
-                  <h3 className="text-2xl font-semibold text-white mt-8">
-                    Selected Modules
-                  </h3>
-                  <table className="w-2/3 max-w-lg mx-auto bg-white mt-4 rounded-lg shadow-md overflow-hidden">
-                    <thead>
-                      <tr className="bg-black text-white text-center">
-                        <th className="p-4 ">Module</th>
-                        <th className="p-4">Grade</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {selectedModules.map((module) => (
-                        <tr
-                          key={module}
-                          className="text-center border-b-2 border-gray-300"
-                        >
-                          <td className="p-4 ">{module}</td>
-                          <td className="p-4">
-                            <select
-                              className="p-2 border rounded-lg"
-                              value={moduleGrades[module] || ""}
-                              onChange={(e) =>
-                                handleGradeChange(module, e.target.value)
-                              }
-                            >
-                              <option value="">Select Grade</option>
-                              {grades.map((grade) => (
-                                <option key={grade} value={grade}>
-                                  {grade}
-                                </option>
-                              ))}
-                            </select>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-
-                  <div className="mt-6 text-white text-center">
-                    <h3 className="text-2xl font-semibold">
-                      GPA: {calculateGPA()}
-                    </h3>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                    {modules.map((module, index) => (
+                      <div
+                        key={index}
+                        className={`p-4 border rounded-lg cursor-pointer ${
+                          selectedModules.includes(module.moduleCode)
+                            ? "bg-gray-400 text-white"
+                            : "bg-white"
+                        }`}
+                        onClick={() =>
+                          setSelectedModules((prev) =>
+                            prev.includes(module.moduleCode)
+                              ? prev.filter((m) => m !== module.moduleCode)
+                              : [...prev, module.moduleCode]
+                          )
+                        }
+                      >
+                        <div className="font-bold text-lg">{module.moduleCode}</div>{" "}
+                        {/* moduleCode */}
+                        <div className="text-base">{module.moduleTitle}</div>{" "}
+                        {/* topic as the module title */}
+                      </div>
+                    ))}
                   </div>
+
+                  {selectedModules.length > 0 && (
+                    <>
+                      <h3 className="text-2xl font-semibold text-white mt-8">
+                        Selected Modules
+                      </h3>
+                      <table className="w-2/3 max-w-lg mx-auto bg-white mt-4 rounded-lg shadow-md overflow-hidden">
+                        <thead>
+                          <tr className="bg-black text-white text-center">
+                            <th className="p-4">Module</th>
+                            <th className="p-4">Grade</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {selectedModules.map((module) => (
+                            <tr
+                              key={module}
+                              className="border-b hover:bg-gray-100"
+                            >
+                              <td className="p-4 text-center">{module}</td>
+                              <td className="p-4">
+                                <select
+                                  value={moduleGrades[module] || ""}
+                                  onChange={(e) =>
+                                    handleGradeChange(module, e.target.value)
+                                  }
+                                  className="w-full border px-2 py-1 rounded-md"
+                                >
+                                  <option value="">Select Grade</option>
+                                  {grades.map((grade) => (
+                                    <option key={grade} value={grade}>
+                                      {grade}
+                                    </option>
+                                  ))}
+                                </select>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+
+                      <div className="text-center text-white text-xl mt-8">
+                        GPA: {calculateGPA()}
+                      </div>
+                    </>
+                  )}
                 </>
               )}
             </>

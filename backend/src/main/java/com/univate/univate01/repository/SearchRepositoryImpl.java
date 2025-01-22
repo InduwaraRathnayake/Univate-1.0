@@ -36,14 +36,36 @@ public class SearchRepositoryImpl implements SearchRepository {
         MongoCollection<Document> collection = database.getCollection("modules");
         AggregateIterable<Document> result = collection.aggregate(Arrays.asList(new Document("$search",
                 new Document("text",
-                new Document("query", text)
-                .append("path",Arrays.asList("moduleTitle", "moduleCode","compulsoryOrElective","intake","syllabusOutlines", "learningOutcomes")))),
+                        new Document("query", text)
+                                .append("path",
+                                        Arrays.asList("moduleTitle", "moduleCode", "compulsoryOrElective", "intake",
+                                                "syllabusOutline", "learningOutcomes")))),
                 new Document("$sort",
-                new Document("semester", 1L))));
+                        new Document("semester", 1L))));
 
-        result.forEach(doc->courses.add(mongoConverter.read(Course.class, doc)));
+        result.forEach(doc -> courses.add(mongoConverter.read(Course.class, doc)));
 
         return courses;
+    }
+
+    @Override
+    public List<Course> findBySemester(int semester) {
+        
+        List<Course> courses = new ArrayList<>();
+
+        MongoDatabase database = mongoClient.getDatabase("Univate01");
+        MongoCollection<Document> collection = database.getCollection("modules");
+        AggregateIterable<Document> result = collection.aggregate(Arrays.asList(new Document("$search",
+                new Document("index", "default")
+                        .append("range",
+                                new Document("path", "semester")
+                                        .append("gte", semester)
+                                        .append("lte", semester)))));
+        
+    result.forEach(doc -> {
+        courses.add(mongoConverter.read(Course.class, doc));
+    }); 
+    return courses;
     }
 
 }

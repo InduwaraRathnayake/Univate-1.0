@@ -134,6 +134,7 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
 
             <section className="mb-8">
             <h2 className="text-xl font-semibold text-black mb-3">Syllabus Outline</h2>
+            <p className="mb-5">{moduleDetails.syllabusOutline.syllabus_outline_desc}</p>
             <div className="space-y-4">
               <ul className="list-disc pl-5 text-gray-900">
                 {moduleDetails.syllabusOutline.content.map(
