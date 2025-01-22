@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import Loader from "@/components/ui/lodder";
+import { useRouter } from "next/navigation";
 
 const Modules = () => {
   const [modules, setModules] = useState([]);
@@ -11,11 +13,15 @@ const Modules = () => {
   const [error, setError] = useState("");
   const [searchText, setSearchText] = useState("");
 
+  const router = useRouter();
+
   const fetchModules = async (query: string = "") => {
     try {
       setLoading(true);
       const url = query
-        ? `http://localhost:8080/api/modules/search/${encodeURIComponent(query)}`
+        ? `http://localhost:8080/api/modules/search/${encodeURIComponent(
+            query
+          )}`
         : "http://localhost:8080/api/modules";
       const response = await fetch(url);
       if (!response.ok) {
@@ -50,17 +56,21 @@ const Modules = () => {
 
   if (loading) {
     return (
-      <div className="h-full flex justify-center items-center">
-        <p className="text-white text-xl">Loading...</p>
+      <div className="h-full flex justify-center items-center min-h-screen flex-col">
+        <Loader />
+        <p className="text-white text-xl mt-4">
+          Loading modules, please wait...
+        </p>
       </div>
     );
   }
 
   if (error) {
     return (
-      <div className="h-full flex justify-center items-center">
-        <p className="text-red-500 text-xl">Error: {error}</p>
-      </div>
+      // <div className="h-full flex justify-center items-center">
+      //   <p className="text-red-500 text-xl">Error: {error}</p>
+      // </div>
+      router.push("/not_found")
     );
   }
 
@@ -119,14 +129,16 @@ const Modules = () => {
                         {module.gpaOrNgpa}
                       </p>
                       <div className="flex mt-4">
-                        {module.semester.map((semester: string, index: number) => (
-                          <div
-                            key={index}
-                            className="px-3 py-1 bg-gray-600 rounded-full text-sm text-white mr-2"
-                          >
-                            Semester {semester}
-                          </div>
-                        ))}
+                        {module.semester.map(
+                          (semester: string, index: number) => (
+                            <div
+                              key={index}
+                              className="px-3 py-1 bg-gray-600 rounded-full text-sm text-white mr-2"
+                            >
+                              Semester {semester}
+                            </div>
+                          )
+                        )}
                       </div>
                     </div>
                   </Link>
