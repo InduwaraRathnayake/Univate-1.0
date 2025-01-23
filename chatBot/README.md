@@ -10,7 +10,7 @@ This guide will help you set up and run the chatbot in a virtual environment.
 
 1. **Navigate to the chatbot directory:**
    ```sh
-   cd path/to/chatbot
+   cd path/to/chatBot
    ```
 
 2. **Install virtualenv:**
@@ -49,7 +49,7 @@ This guide will help you set up and run the chatbot in a virtual environment.
     '(chatBotEnv)' C:\Users\.....\Univate\chatBot\chatBotEnv\Scripts>
     ```
 
-5. **Navigate back to the chatbot directory:**
+5. **Navigate back to the chatBot directory:**
    ```sh
    cd ../..
    ```
@@ -72,8 +72,10 @@ This guide will help you set up and run the chatbot in a virtual environment.
 ## 🚀 Running the Chatbot Server
 
 Once the virtual environment is activated and dependencies are installed, run the chatbot server using:
+
+- Make sure that you are in the chatBot dir. `C:\Users\.....\Univate\chatBot`
 ```sh
-python app.py
+python -m src.main
 ```
 
 🎉 Your chatbot should now be up and running!
@@ -117,7 +119,7 @@ deactivate
 
 3. **Run the chatbot server:**
    ```sh
-   python app.py
+   python -m src.main
    ```
 
 

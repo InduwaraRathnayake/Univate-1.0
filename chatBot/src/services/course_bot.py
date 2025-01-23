@@ -1,48 +1,25 @@
-from fastapi import FastAPI, HTTPException
-from fastapi.middleware.cors import CORSMiddleware
-from pydantic import BaseModel
-from typing import Dict, List
 import logging
-
+from typing import Dict, List
+import numpy as np
 from pymongo import MongoClient
-import os
-from dotenv import load_dotenv
 import google.generativeai as genai
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-import numpy as np
 
-# Set up logging
-logging.basicConfig(level=logging.INFO)
+from src.config.settings import MONGODB_URI, DB_NAME, COLLECTION_NAME, GOOGLE_API_KEY, MODEL_NAME
+
 logger = logging.getLogger(__name__)
-
-app = FastAPI()
-
-# Enable CORS
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # Your Next.js frontend URL
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-class Query(BaseModel):
-    message: str
 
 class CourseBot:
     def __init__(self):
-        # Load environment variables
-        load_dotenv()
-        
         # Initialize MongoDB connection
-        self.client = MongoClient(os.getenv('MONGODB_URI', 'mongodb://localhost:27017/'))
-        self.db = self.client['Univate01']
-        self.collection = self.db['modules']
+        self.client = MongoClient(MONGODB_URI)
+        self.db = self.client[DB_NAME]
+        self.collection = self.db[COLLECTION_NAME]
         
         # Initialize Gemini
-        genai.configure(api_key=os.getenv('GOOGLE_API_KEY'))
-        self.model = genai.GenerativeModel('gemini-1.5-pro')
+        genai.configure(api_key=GOOGLE_API_KEY)
+        self.model = genai.GenerativeModel(MODEL_NAME)
         
         # Initialize vectorizer
         self.vectorizer = TfidfVectorizer(stop_words='english')
@@ -145,36 +122,3 @@ class CourseBot:
             # Fallback response with basic course information
             return f"Based on your query about '{query}', I found these relevant courses:\n\n" + \
                    "\n\n".join([self.format_course_info(c) for c in relevant_courses])
-
-bot = None
-
-# Initialize the bot
-@app.on_event("startup")
-async def startup_event():
-    global bot
-    try:
-        bot = CourseBot()
-        logger.info("CourseBot initialized successfully")
-    except Exception as e:
-        logger.error(f"Failed to initialize CourseBot: {str(e)}")
-        raise
-
-@app.post("/api/chat")
-async def chat(query: Query):
-    try:
-        logger.info(f"Received query: {query.message}")
-        
-        if not bot:
-            raise HTTPException(status_code=500, detail="ChatBot not initialized")
-            
-        response = bot.generate_response(query.message)
-        logger.info(f"Generated response successfully")
-        
-        return {"response": response}
-    except Exception as e:
-        logger.error(f"Error processing chat request: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000, log_level="info")
