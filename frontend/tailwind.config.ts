@@ -1,5 +1,9 @@
 import type { Config } from "tailwindcss";
 
+const {
+  default: flattenColorPalette,
+} = require("tailwindcss/lib/util/flattenColorPalette");
+
 export default {
   darkMode: ["class"],
   content: [
@@ -79,8 +83,17 @@ export default {
         shimmer: "shimmer 2s linear infinite",
         gradient: "gradient 4s ease infinite",
         shadowSwing: "shadowSwing 2s infinite ease-in-out",
+        aurora: "aurora 60s linear infinite",
       },
       keyframes: {
+        aurora: {
+          from: {
+            backgroundPosition: "50% 50%, 50% 50%",
+          },
+          to: {
+            backgroundPosition: "350% 50%, 350% 50%",
+          },
+        },
         shadowSwing: {
           "0%": { transform: "translate(-5px, 5px) scale(1.05)", opacity: "0.5" },
           "50%": { transform: "translate(5px, -5px) scale(1.1)", opacity: "0.7" },
@@ -108,5 +121,17 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), addVariablesForColors]
 } satisfies Config;
+
+
+function addVariablesForColors({ addBase, theme }: any) {
+  let allColors = flattenColorPalette(theme("colors"));
+  let newVars = Object.fromEntries(
+    Object.entries(allColors).map(([key, val]) => [`--${key}`, val])
+  );
+ 
+  addBase({
+    ":root": newVars,
+  });
+}
