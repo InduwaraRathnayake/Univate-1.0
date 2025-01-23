@@ -1,8 +1,8 @@
 from fastapi import APIRouter, HTTPException
 import logging
 
-from src.models.schemas import Query, ChatResponse
-from src.services.course_bot import CourseBot
+from src.models.schemas import Query, ChatResponse, BotConfig
+from src.services.course_bot import CourseBot 
 
 logger = logging.getLogger(__name__)
 router = APIRouter()
@@ -33,3 +33,32 @@ async def chat(query: Query):
     except Exception as e:
         logger.error(f"Error processing chat request: {str(e)}")
         raise HTTPException(status_code=500, detail=str(e)) 
+    
+
+@router.post("/configure", response_model=dict)
+async def configure_bot(config: BotConfig):
+    try:
+        if config.temperature is not None:
+            bot.set_temperature(config.temperature)
+        if config.max_tokens is not None:
+            bot.set_max_tokens(config.max_tokens)
+        if config.system_prompt is not None:
+            bot.update_system_prompt(config.system_prompt)
+            
+        return {"message": "Bot configuration updated successfully"}
+    except Exception as e:
+        logger.error(f"Error configuring bot: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.post("/clear-history")
+async def clear_history():
+    try:
+        bot.clear_chat_history()
+        return {"message": "Chat history cleared successfully"}
+    except Exception as e:
+        logger.error(f"Error clearing chat history: {str(e)}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+@router.get("/health")
+async def health_check():
+    return {"status": "healthy"}
