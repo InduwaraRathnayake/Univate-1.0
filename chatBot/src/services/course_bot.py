@@ -46,33 +46,57 @@ class CourseBot:
 
     def prepare_data(self):
         """Prepare course data for searching"""
-        courses = self.collection.find({})
-        
-        for course in courses:
-            # Create searchable text for each course
-            text = f"{course['moduleCode']} {course['moduleTitle']} "
+        try:
+            courses = self.collection.find({})
             
-            # Add learning outcomes
-            if course.get('learningOutcomes'):
-                text += " ".join(course['learningOutcomes']) + " "
+            for course in courses:
+                text_parts = []
+                
+                # Add core course information
+                text_parts.append(f"{course.get('moduleCode', '')} {course.get('moduleTitle', '')}")
+                text_parts.append(f"Semester {', '.join(map(str, course.get('semester', [])))} {course.get('intake', '')}")
+                text_parts.append(f"{course.get('compulsoryOrElective', '')} {course.get('gpaOrNgpa', '')}")
+                text_parts.append(f"Credits: {course.get('credits', '')}")
+                
+                # Add learning outcomes
+                if course.get('learningOutcomes'):
+                    text_parts.append(" ".join(outcome for outcome in course['learningOutcomes'] if outcome))
+                
+                # Add syllabus content with full topic descriptions
+                if course.get('syllabusOutline', {}).get('content'):
+                    for topic in course['syllabusOutline']['content']:
+                        if topic.get('topic'):
+                            text_parts.append(topic['topic'])
+                        if topic.get('subtopics') and any(topic['subtopics']):
+                            text_parts.append(" ".join(subtopic for subtopic in topic['subtopics'] if subtopic))
+                
+                # Add prerequisites
+                prereqs = course.get('prerequisitesOrCorequisites', [])
+                if prereqs and any(prereq for prereq in prereqs):
+                    text_parts.append(f"Prerequisites: {' '.join(prereq for prereq in prereqs if prereq)}")
+
+                # Add hours per week
+                if course.get('hoursPerWeek'):
+                    text_parts.append(f"Lecture hours: {course['hoursPerWeek'].get('lecture', 0)}")
+                    text_parts.append(f"Tutorial/labs hours: {course['hoursPerWeek'].get('lab_tutes', 0)}")
+                
+                # Add evaluation
+                if course.get('evaluation'):
+                    text_parts.append(f"Continuous Assessment: {course['evaluation'].get('CA', 0)}%")
+                    text_parts.append(f"Written Exam: {course['evaluation'].get('WE', 0)}%")
+                
+                final_text = " ".join(text_parts).strip()
+                self.documents.append(final_text)
+                self.course_data.append(course)
             
-            # Add syllabus content
-            if course.get('syllabusOutline') and course['syllabusOutline'].get('content'):
-                for topic in course['syllabusOutline']['content']:
-                    text += f" {topic.get('topic', '')} "
-                    # Add subtopics if they exist
-                    if topic.get('subtopics'):
-                        text += " ".join(topic['subtopics']) + " "
+            if self.documents:
+                self.tfidf_matrix = self.vectorizer.fit_transform(self.documents)
+            else:
+                logger.warning("No course documents found to process")
             
-            # Add prerequisites
-            if course.get('prerequisitesOrCorequisites'):
-                text += " ".join(course['prerequisitesOrCorequisites']) + " "
-            
-            self.documents.append(text)
-            self.course_data.append(course)
-        
-        # Create TF-IDF matrix
-        self.tfidf_matrix = self.vectorizer.fit_transform(self.documents)
+        except Exception as e:
+            logger.error(f"Error preparing course data: {str(e)}")
+            raise
 
     def prepare_context(self, query: str) -> str:
         """Prepare context for the model using relevant course content and chat history."""
@@ -82,7 +106,7 @@ class CourseBot:
         if not relevant_courses:
             return "I couldn't find any relevant courses for your query."
         
-        # Create context with formatted course information
+        # Create context with detailed course information
         context = "Relevant course materials:\n\n"
         for course in relevant_courses:
             context += self.format_course_info(course) + "\n" + "-"*50 + "\n"
@@ -100,26 +124,46 @@ class CourseBot:
 
     def format_course_info(self, course: Dict) -> str:
         """Format course information in a readable way"""
-        info = f"Course: {course['moduleCode']} - {course['moduleTitle']}\n"
-        info += f"Semester: {course['semester']}\n"
-        info += f"Credits: {course['credits']}\n"
-        info += f"Type: {course['compulsoryOrElective']}\n"
+        info = []
         
-        if course.get('prerequisitesOrCorequisites'):
-            prereqs = course['prerequisitesOrCorequisites']
-            if prereqs and prereqs[0]:  # Check if prerequisites exist and aren't empty
-                info += f"Prerequisites: {', '.join(prereqs)}\n"
+        # Basic course information
+        info.append(f"Course: {course.get('moduleCode')} - {course.get('moduleTitle')}")
+        info.append(f"Semester: {', '.join(map(str, course.get('semester', [])))} ({course.get('intake', '')})")
+        info.append(f"Credits: {course.get('credits')}")
+        info.append(f"Type: {course.get('compulsoryOrElective')} ({course.get('gpaOrNgpa', '')})")
         
+        # Prerequisites
+        prereqs = course.get('prerequisitesOrCorequisites', [])
+        if prereqs and any(prereq for prereq in prereqs):
+            info.append(f"Prerequisites: {', '.join(prereq for prereq in prereqs if prereq)}")
+        
+        # Hours per week
+        if course.get('hoursPerWeek'):
+            info.append("\nWeekly Hours:")
+            info.append(f"- Lectures: {course['hoursPerWeek'].get('lecture', 0)} hours")
+            info.append(f"- Tutorial/Labs: {course['hoursPerWeek'].get('lab_tutes', 0)} hours")
+        
+        # Evaluation
+        if course.get('evaluation'):
+            info.append("\nEvaluation:")
+            info.append(f"- Continuous Assessment (CA): {course['evaluation'].get('CA', 0)}%")
+            info.append(f"- Written Exam (WE): {course['evaluation'].get('WE', 0)}%")
+        
+        # Learning outcomes
         if course.get('learningOutcomes'):
-            info += "\nLearning Outcomes:\n- "
-            info += "\n- ".join(course['learningOutcomes'])
+            info.append("\nLearning Outcomes:")
+            info.extend(f"- {outcome}" for outcome in course['learningOutcomes'] if outcome)
         
+        # Syllabus content
         if course.get('syllabusOutline') and course['syllabusOutline'].get('content'):
-            info += "\n\nMain Topics:\n"
+            info.append("\nSyllabus Content:")
             for topic in course['syllabusOutline']['content']:
-                info += f"- {topic.get('topic', '')}\n"
+                if topic.get('topic'):
+                    info.append(f"\n- {topic['topic']}")
+                    if topic.get('subtopics') and any(topic['subtopics']):
+                        info.extend(f"  * {subtopic}" for subtopic in topic['subtopics'] if subtopic)
         
-        return info
+        return "\n".join(info)
 
     def find_relevant_courses(self, query: str, top_k: int = 3) -> List[Dict]:
         """Find most relevant courses for the given query"""
