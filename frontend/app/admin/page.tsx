@@ -19,7 +19,7 @@ const moduleSchema = z.object({
   intake: z.string().min(1, "Intake is required"),
   compulsoryOrElective: z.enum(["Compulsory", "Elective"]),
   gpaOrNgpa: z.enum(["GPA", "NGPA"]),
-  hours_per_week: z.object({
+  hoursPerWeek: z.object({
     lecture: z.number().min(0),
     lab_tutes: z.number().min(0),
   }),
@@ -29,10 +29,10 @@ const moduleSchema = z.object({
     CA: z.number().min(0).max(100),
     WE: z.number().min(0).max(100),
   }),
-  learning_outcomes: z
+  learningOutcomes: z
     .array(z.string())
     .min(1, "At least one learning outcome is required"),
-  syllabus_outline: z.object({
+  syllabusOutline: z.object({
     syllabus_outline_desc: z.string(),
     content: z.array(
       z.object({
@@ -58,15 +58,24 @@ export default function AdminPage() {
     resolver: zodResolver(moduleSchema),
     defaultValues: {
       semester: [3],
-      hours_per_week: { lecture: 2, lab_tutes: 2 },
+      hoursPerWeek: { lecture: 2, lab_tutes: 2 },
       prerequisitesOrCorequisites: [""],
       evaluation: { CA: 40, WE: 60 },
-      learning_outcomes: [""],
-      syllabus_outline: {
+      learningOutcomes: [""],
+      syllabusOutline: {
         syllabus_outline_desc: "",
         content: [{ topic: "", subtopics: [""] }],
       },
     },
+  });
+
+  const {
+    fields: semesterFields,
+    append: appendSemester,
+    remove: removeSemester,
+  } = useFieldArray({
+    control,
+    name: "syllabusOutline.content",
   });
 
   const {
@@ -75,7 +84,7 @@ export default function AdminPage() {
     remove: removePrerequisite,
   } = useFieldArray({
     control,
-    name: "prerequisitesOrCorequisites",
+    name: "syllabusOutline.content",
   });
 
   const {
@@ -84,7 +93,7 @@ export default function AdminPage() {
     remove: removeLearningOutcome,
   } = useFieldArray({
     control,
-    name: "learning_outcomes",
+    name: "syllabusOutline.content",
   });
 
   const {
@@ -94,7 +103,7 @@ export default function AdminPage() {
     update: updateSyllabus,
   } = useFieldArray({
     control,
-    name: "syllabus_outline.content",
+    name: "syllabusOutline.content",
   });
 
   // Add these new functions to handle subtopics
@@ -171,14 +180,34 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <Label htmlFor="semester">Semester</Label>
-                <Input
-                  type="number"
-                  {...register("semester.0", { valueAsNumber: true })}
-                  min={1}
-                  max={8}
-                  defaultValue={3}
-                />
+                <Label>Semesters</Label>
+                <div className="space-y-4">
+                  {semesterFields.map((field, index) => (
+                    <div key={field.id} className="flex gap-2">
+                      <Input
+                        type="number"
+                        {...register(`semester.${index}`, {
+                          valueAsNumber: true,
+                        })}
+                        placeholder={`Semester ${index + 1}`}
+                        min={1}
+                        max={8}
+                      />
+                      <Button
+                        title=""
+                        icon={<Minus className="h-4 w-4" />}
+                        handleClick={() => removeSemester(index)}
+                        position="left"
+                      />
+                    </div>
+                  ))}
+                  <Button
+                    title="Add Semester"
+                    icon={<Plus className="h-4 w-4 mr-2" />}
+                    handleClick={() => appendSemester({ topic: "", subtopics: [""] })} 
+                    position="left"
+                  />
+                </div>
               </div>
 
               <div>
@@ -220,7 +249,7 @@ export default function AdminPage() {
                 </Label>
                 <Input
                   type="number"
-                  {...register("hours_per_week.lecture", {
+                  {...register("hoursPerWeek.lecture", {
                     valueAsNumber: true,
                   })}
                   min={0}
@@ -229,12 +258,12 @@ export default function AdminPage() {
               </div>
 
               <div>
-                <Label htmlFor="hours_per_week.lab_tutes">
+                <Label htmlFor="hoursPerWeek.lab_tutes">
                   Lab/Tutorial Hours/Week
                 </Label>
                 <Input
                   type="number"
-                  {...register("hours_per_week.lab_tutes", {
+                  {...register("hoursPerWeek.lab_tutes", {
                     valueAsNumber: true,
                   })}
                   min={0}
@@ -275,7 +304,9 @@ export default function AdminPage() {
                 <Button
                   title="Add Prerequisite"
                   icon={<Plus className="h-4 w-4 mr-2" />}
-                  handleClick={() => appendPrerequisite("")}
+                  handleClick={() =>
+                    appendPrerequisite({ topic: "", subtopics: [""] })
+                  }
                   position="left"
                 />
               </div>
@@ -313,7 +344,7 @@ export default function AdminPage() {
                 {learningOutcomeFields.map((field, index) => (
                   <div key={field.id} className="flex gap-2">
                     <Input
-                      {...register(`learning_outcomes.${index}`)}
+                      {...register(`learningOutcomes.${index}`)}
                       placeholder="Enter a learning outcome"
                     />
                     <Button
@@ -327,7 +358,9 @@ export default function AdminPage() {
                 <Button
                   title="Add Learning Outcome"
                   icon={<Plus className="h-4 w-4 mr-2" />}
-                  handleClick={() => appendLearningOutcome("")}
+                  handleClick={() =>
+                    appendLearningOutcome({ topic: "", subtopics: [""] })
+                  }
                   position="left"
                 />
               </div>
@@ -340,7 +373,7 @@ export default function AdminPage() {
                 <div>
                   <Label>Description</Label>
                   <Textarea
-                    {...register("syllabus_outline.syllabus_outline_desc")}
+                    {...register("syllabusOutline.syllabus_outline_desc")}
                     placeholder="Enter syllabus outline description"
                   />
                 </div>
@@ -355,7 +388,7 @@ export default function AdminPage() {
                         <Label>Topic</Label>
                         <Input
                           {...register(
-                            `syllabus_outline.content.${index}.topic`
+                            `syllabusOutline.content.${index}.topic`
                           )}
                           placeholder="Enter topic name"
                         />
@@ -379,7 +412,7 @@ export default function AdminPage() {
                           >
                             <Input
                               {...register(
-                                `syllabus_outline.content.${index}.subtopics.${subtopicIndex}`
+                                `syllabusOutline.content.${index}.subtopics.${subtopicIndex}`
                               )}
                               placeholder="Enter subtopic"
                             />

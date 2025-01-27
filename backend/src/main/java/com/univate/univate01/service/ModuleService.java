@@ -29,9 +29,16 @@ public class ModuleService {
         return searchRepository.findByText(text);
     }
 
-    // Get a specific module by module code
-    public Optional<Course> getModuleById(String moduleCode) {
-        return moduleRepository.findById(moduleCode);
+    // Get a specific module by module id
+    public Optional<Course> getModuleById(String id) {
+        return moduleRepository.findById(id);
+    }
+
+     // Get a module by semester
+     public List<Course> getModuleBySemester(int semester) {
+        List<Course> courses = searchRepository.findBySemester(semester);
+        System.out.println("\nCourses at service: \n"+courses);
+        return searchRepository.findBySemester(semester);
     }
 
     // Add a new module

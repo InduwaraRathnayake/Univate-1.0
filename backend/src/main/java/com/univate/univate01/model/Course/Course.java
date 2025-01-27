@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -21,7 +20,6 @@ public class Course {
     @Id
     private String id;
 
-    @Field("module_code")
     @JsonProperty("moduleCode")
     private String moduleCode;
 
@@ -46,15 +44,15 @@ public class Course {
     @JsonProperty("prerequisitesOrCorequisites")
     private List<String> prerequisitesOrCorequisites;
 
-    @JsonProperty("learning_outcomes")
+    @JsonProperty("learningOutcomes")
     private List<String> learningOutcomes;
 
-    @JsonProperty("hours_per_week")
+    @JsonProperty("hoursPerWeek")
     private HoursPerWeek hoursPerWeek;
 
     @JsonProperty("evaluation")
     private Evaluation evaluation;
 
-    @JsonProperty("syllabus_outline")
+    @JsonProperty("syllabusOutline")
     private SyllabusOutline syllabusOutline;
 }
