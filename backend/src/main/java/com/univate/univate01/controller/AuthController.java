@@ -3,6 +3,9 @@ package com.univate.univate01.controller;
 import com.univate.univate01.model.User;
 import com.univate.univate01.repository.UserRepository;
 import com.univate.univate01.util.JwtHelper;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,12 @@ public class AuthController {
 
     @Autowired
     private JwtHelper jwtHelper;
+
+    @GetMapping
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
+    }
+
 
     @PostMapping("/register")
     public String registerUser(@RequestBody User user) {
