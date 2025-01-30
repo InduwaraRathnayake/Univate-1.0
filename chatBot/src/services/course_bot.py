@@ -28,7 +28,7 @@ class CourseBot:
         
         # Chat configuration
         self.temperature = 0.7
-        self.max_tokens = 1000
+        self.max_tokens = 100
         self.context_window = 5  # Number of previous messages to keep
         self.chat_history = []
         self.system_prompt = """You are a helpful course advisor for a computer science department. 
