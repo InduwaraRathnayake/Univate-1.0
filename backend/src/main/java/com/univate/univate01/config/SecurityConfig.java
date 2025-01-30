@@ -47,7 +47,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/modules/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtAuthenticationFilter(customUserDetailsService, jwtHelper), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
@@ -55,8 +55,8 @@ public class SecurityConfig {
 
     
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter() {
-        return new JwtAuthenticationFilter(customUserDetailsService, jwtHelper);
-    }
+    // @Bean
+    // public JwtAuthenticationFilter jwtAuthenticationFilter() {
+    //     return new JwtAuthenticationFilter(customUserDetailsService, jwtHelper);
+    // }
 }
