@@ -2,17 +2,27 @@ package com.univate.univate01.controller;
 
 import com.univate.univate01.model.User;
 import com.univate.univate01.repository.UserRepository;
+import com.univate.univate01.service.UserService;
 import com.univate.univate01.util.JwtHelper;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
+
+    private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
     private UserRepository userRepository;
@@ -23,29 +33,33 @@ public class AuthController {
     @Autowired
     private JwtHelper jwtHelper;
 
+    @Autowired
+    private UserService userService;
+
     @GetMapping
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
-
     @PostMapping("/register")
-    public String registerUser(@RequestBody User user) {
-        user.setPassword(passwordEncoder.encode(user.getPassword())); // Hash password
+    public ResponseEntity<Map<String, String>> registerUser(@RequestBody User user) {
+        // Check if user already exists
+        Optional<User> existingUser = userRepository.findByUsername(user.getUsername());
+        if (existingUser.isPresent()) {
+            return ResponseEntity.badRequest().body(Map.of("message", "Username already exists!"));
+        }
+
+        // Hash password and save user
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        return "User registered successfully!";
+
+        return ResponseEntity.ok(Map.of("message", "User registered successfully!"));
     }
 
     @PostMapping("/login")
-    public String authenticateUser(@RequestBody User user) {
-        User existingUser = userRepository.findByUsername(user.getUsername())
-                .orElseThrow(() -> new RuntimeException("Invalid username or password"));
-
-        if (passwordEncoder.matches(user.getPassword(), existingUser.getPassword())) {
-            // Generate and return JWT token
-            return jwtHelper.generateToken(existingUser);
-        } else {
-            throw new RuntimeException("Invalid username or password");
-        }
+    public ResponseEntity<Map<String, Object>> authenticateUser(@RequestBody User user) {
+        return ResponseEntity.ok(userService.loginUser(user.getUsername(), user.getPassword()));
+    
     }
+
 }
