@@ -1,82 +1,43 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { Vortex } from "@/components/ui/vortex";
 import {
-  FaBrain,
   FaDatabase,
-  FaChartLine,
-  FaSearch,
-  FaProjectDiagram,
-  FaCogs,
-  FaNetworkWired,
-  FaChartPie,
-  FaCloud,
 } from "react-icons/fa";
 
-const companies = [
-  { name: "Google" },
-  { name: "WS02" },
-  { name: "Microsoft" },
-  { name: "Amazon" },
-  { name: "IFS" },
-  { name: "Codegen" },
-];
-
 const DSE = () => {
-  const careers = [
-    {
-      icon: <FaChartLine />,
-      title: "Predictive Analytics",
-      description:
-        "Leverage data to forecast trends and make informed decisions.",
-    },
-    {
-      icon: <FaBrain />,
-      title: "Machine Learning",
-      description: "Develop algorithms to analyze data and automate processes.",
-    },
-    {
-      icon: <FaDatabase />,
-      title: "Big Data Management",
-      description: "Store, process, and analyze massive datasets efficiently.",
-    },
-    {
-      icon: <FaSearch />,
-      title: "Data Analysis",
-      description:
-        "Extract insights from complex datasets to solve real-world problems.",
-    },
-    {
-      icon: <FaProjectDiagram />,
-      title: "Data Visualization",
-      description:
-        "Create compelling visualizations to communicate findings effectively.",
-    },
-    {
-      icon: <FaCogs />,
-      title: "AI Development",
-      description:
-        "Build AI systems to solve complex challenges and innovate processes.",
-    },
-    {
-      icon: <FaNetworkWired />,
-      title: "Data Engineering",
-      description:
-        "Design and maintain data pipelines for seamless data processing.",
-    },
-    {
-      icon: <FaChartPie />,
-      title: "Statistical Modeling",
-      description:
-        "Apply advanced statistical techniques to uncover hidden patterns in data.",
-    },
-    {
-      icon: <FaCloud />,
-      title: "Cloud Data Solutions",
-      description:
-        "Utilize cloud platforms to store, process, and analyze data at scale.",
-    },
-  ];
+  interface Data {
+    careers: { title: string; description: string }[];
+    companies: { name: string; logo_url: string }[]; 
+  }
+
+  const [data, setData] = useState<Data | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/streams/1"); // Replace with your backend URL
+        setData(response.data); 
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData(); 
+  }, []); 
+
+  if (!data) {
+    return <div>Loading...</div>;
+  }
+
+  const careers = data.careers.map((career) => ({
+    icon: <FaDatabase />, 
+    title: career.title,
+    description: career.description,
+  }));
+
+  const companies = data.companies;
 
   return (
     <main>
@@ -99,7 +60,7 @@ const DSE = () => {
 
       <section className="bg-black text-white p-8 min-h-screen">
         <div className="text-center">
-          <h1 className="text-4xl font-bold mt-10 mb-10">
+          <h1 className="text-4xl font-bold mt-5 mb-12">
             Empowering Data Science Professionals
           </h1>
         </div>
@@ -129,17 +90,20 @@ const DSE = () => {
               whiteSpace: "nowrap",
             }}
           >
-            {[...companies, ...companies].map((category, index) => (
+            {[...companies, ...companies].map((company, index) => (
               <div
                 key={index}
-                className="bg-black rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                className="rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
                 role="button"
-                aria-label={`Shop ${category.name}`}
+                aria-label={`Shop ${company.name}`}
                 style={{ minWidth: "200px" }}
               >
-                <span className="text-xl font-medium text-white">
-                  {category.name}
-                </span>
+                <img
+                  src={'/'+company.logo_url}
+                  alt={`Logo of ${company.name}`}
+                  className="w-32 h-32 object-contain"
+                />
+                
               </div>
             ))}
           </div>

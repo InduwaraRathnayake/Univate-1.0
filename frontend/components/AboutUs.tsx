@@ -4,7 +4,7 @@ import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 
 const teamMembers = [
   {
-    id: 3,
+    id: 1,
     name: 'Mike Johnson',
     role: 'CSE Undergraduate' ,
     university:' University of Moratuwa',
@@ -15,7 +15,7 @@ const teamMembers = [
     email: 'induwarar.22@cse.mrt.ac.lk '
   },
   {
-    id: 4,
+    id: 2,
     name: 'Mike Johnson',
     role: 'CSE Undergraduate',
     university:' University of Moratuwa',
@@ -26,7 +26,7 @@ const teamMembers = [
     email: 'pasinduravishan.22@cse.mrt.ac.lk'
   },
   {
-    id: 6,
+    id: 3,
     name: 'Mike Johnson',
     role: 'CSE Undergraduate',
     university:' University of Moratuwa',
@@ -35,6 +35,17 @@ const teamMembers = [
     linkedin: 'www.linkedin.com/in/pathumi-ranasinghe',
     github: 'https://github.com/PathumiRanasinghe',
     email: 'pathumi.22@cse.mrt.ac.lk'
+  },
+  {
+    id: 4,
+    name: 'Mike Johnson',
+    role: 'CSE Undergraduate',
+    university:' University of Moratuwa',
+    image: '/member.jpg',
+    description: 'Empathetic researcher uncovering deep user insights.',
+    linkedin: 'www.linkedin.com/in/chehan-dissanayake',
+    github: 'https://github.com/nchehan',
+    email: 'chehand.22@cse.mrt.ac.lk'
   }
 ];
 
@@ -59,7 +70,7 @@ const TeamMember: React.FC<TeamMemberProps> = ({ member }) => {
         src={member.image} 
         alt={`${member.name} - ${member.role}`} 
         width={870} // Set width and height for Next.js Image optimization
-        height={580}
+        height={500}
         className="w-full h-64 object-cover"
       />
       <div className="p-6">
@@ -88,7 +99,7 @@ const AboutUs = () => {
     <section className="bg-black min-h-screen py-28 px-4 sm:px-6 lg:px-8" aria-labelledby="team-heading">
       <div className="max-w-7xl mx-auto">
         <h2 id="team-heading" className="text-5xl font-bold dark:text-white text-white text-center mb-12">Meet Our Team</h2>
-        <div className="grid grid-cols-1 gap-12 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
           {teamMembers.map((member) => (
             <TeamMember key={member.id} member={member} />
           ))}
