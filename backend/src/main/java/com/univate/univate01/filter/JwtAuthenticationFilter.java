@@ -1,16 +1,14 @@
 package com.univate.univate01.filter;
 
-import com.univate.univate01.service.CustomUserDetailsService;
+import com.univate.univate01.service.UserService;
 import com.univate.univate01.util.JwtHelper;
 import io.jsonwebtoken.ExpiredJwtException;
 import java.lang.IllegalArgumentException;
 import io.jsonwebtoken.MalformedJwtException;
 
-//import org.hibernate.validator.internal.util.stereotypes.Lazy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
-//import org.springframework.context.annotation.Scope;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,16 +27,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
-    private final CustomUserDetailsService userDetailService;
-    private final JwtHelper jwtHelper;
+    @Autowired
+    private UserService userDetailService;
 
-    public JwtAuthenticationFilter(CustomUserDetailsService userDetailService, JwtHelper jwtHelper) {
-        this.userDetailService = userDetailService;
-        this.jwtHelper = jwtHelper;
-    }
+    @Autowired
+    private JwtHelper jwtHelper;
 
+    @SuppressWarnings("null")
     @Override
-    protected void doFilterInternal(@SuppressWarnings("null") HttpServletRequest request, @SuppressWarnings("null") HttpServletResponse response, @SuppressWarnings("null") FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
         String requestTokenHeader = request.getHeader("Authorization");

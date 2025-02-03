@@ -21,24 +21,4 @@ public class User {
     private String email;
     private String password;
     private List<String> roles;
-
-    public User orElse(User other) {
-        return this != null ? this : other;
-    }
-
-    public List<String> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<String> roles) {
-        this.roles = roles;
-    }
-
-    public User orElseThrow() {
-        return this;
-    }
-
-    public User orElseThrow(Object object) {
-        throw new UnsupportedOperationException("Unimplemented method 'orElseThrow'");
-    }
 }

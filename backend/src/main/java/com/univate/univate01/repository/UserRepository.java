@@ -11,4 +11,6 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends MongoRepository<User, String> {
     // Add custom query methods if needed
     Optional<User> findByUsername(String username); // Fetch user by username
+
+    Optional<User> findByEmail(String email); // Fetch user by email
 }

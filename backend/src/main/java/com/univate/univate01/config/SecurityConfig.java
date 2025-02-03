@@ -1,63 +1,62 @@
 package com.univate.univate01.config;
 
 import com.univate.univate01.filter.JwtAuthenticationFilter;
-import com.univate.univate01.service.CustomUserDetailsService;
-//import com.univate.univate01.util.JwtAuthorizationFilter;
-import com.univate.univate01.util.JwtHelper;
+import com.univate.univate01.service.UserService;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-//import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.config.Customizer;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
-
-    private final CustomUserDetailsService customUserDetailsService;
-    private final JwtHelper jwtHelper;
-
-    public SecurityConfig(CustomUserDetailsService customUserDetailsService, JwtHelper jwtHelper) {
-        this.customUserDetailsService = customUserDetailsService;
-        this.jwtHelper = jwtHelper;
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
-    @SuppressWarnings({ "deprecation", "removal" })
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf().disable()
-                .authorizeRequests()
-                .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/modules/**").permitAll()
-                .requestMatchers("/api/streams/**").permitAll()
-                .anyRequest().authenticated()
-                .and()
-                .addFilterBefore(new JwtAuthenticationFilter(customUserDetailsService, jwtHelper), UsernamePasswordAuthenticationFilter.class)
-                .build();
+    public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter)
+            throws Exception {
+        http.csrf(customizer -> customizer.disable());
+        http
+            .authorizeHttpRequests(request->request
+            .requestMatchers("/api/auth/**").permitAll()
+            .requestMatchers("/api/modules/**").permitAll()
+            .requestMatchers("/api/streams/**").permitAll()
+            .anyRequest().authenticated());
+
+        http.httpBasic(Customizer.withDefaults()); 
+
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+
     }
 
+    @Bean
+    public AuthenticationProvider authenticationProvider(PasswordEncoder passwordEncoder, UserService userService) {
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        provider.setPasswordEncoder(passwordEncoder);
+        provider.setUserDetailsService(userService);
+        return provider;
+    }
 
-
-    
-
-    // @Bean
-    // public JwtAuthenticationFilter jwtAuthenticationFilter() {
-    //     return new JwtAuthenticationFilter(customUserDetailsService, jwtHelper);
-    // }
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
