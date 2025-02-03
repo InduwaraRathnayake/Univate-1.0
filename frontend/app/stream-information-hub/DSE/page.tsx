@@ -99,7 +99,7 @@ const DSE = () => {
                 style={{ minWidth: "200px" }}
               >
                 <img
-                  src={'/'+company.logo_url}
+                  src={company.logo_url}
                   alt={`Logo of ${company.name}`}
                   className="w-32 h-32 object-contain"
                 />
