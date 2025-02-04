@@ -31,5 +31,30 @@ public class Stream {
     @JsonProperty("companies")
     private List<Company> companies;
 
+    @JsonProperty("sem1")
+    private List<String> sem1;
+
+    @JsonProperty("sem2")
+    private List<String> sem2;
+
+    @JsonProperty("sem3")
+    private List<String> sem3;
+
+    @JsonProperty("sem4")
+    private List<String> sem4;
+
+    @JsonProperty("sem5")
+    private List<String> sem5;
+
+    @JsonProperty("sem6")
+    private List<String> sem6;
+
+    @JsonProperty("sem7")
+    private List<String> sem7;
+
+    @JsonProperty("sem8")
+    private List<String> sem8;
+
+
    
 }
