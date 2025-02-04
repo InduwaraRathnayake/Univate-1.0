@@ -1,16 +1,14 @@
 package com.univate.univate01.controller;
 
-import com.univate.univate01.model.User;
-import com.univate.univate01.repository.UserRepository;
 import com.univate.univate01.service.UserService;
 import com.univate.univate01.dto.RegisterRequest;
 import com.univate.univate01.dto.LoginRequest;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
@@ -25,15 +23,7 @@ public class AuthController {
     private static final Logger log = LoggerFactory.getLogger(AuthController.class);
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
     private UserService userService;
-
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
-    }
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegisterRequest request) {
@@ -60,13 +50,22 @@ public class AuthController {
                     .body(Map.of("message", "An error occurred during login"));
         }
 
-        /*
-         *         Map<String, Object> response = userService.loginUser(request.getEmail(), request.getPassword());
-        if (response.containsKey("token")) {
-            return ResponseEntity.ok(response);
+    }
+
+    @GetMapping("/oauth/signup")
+    public ResponseEntity<Map<String, Object>> googleSignup(OAuth2AuthenticationToken authToken) {
+        try {
+            userService.googleSignup(authToken);
+            return ResponseEntity.ok(Map.of("message", "User registered successfully!"));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
-        return ResponseEntity.badRequest().body(response);
-         */
+    }
+
+    @GetMapping("/oauth/login")
+    public ResponseEntity<Map<String, Object>> googleLogin(OAuth2AuthenticationToken authToken) {
+        Map<String, Object> response = userService.googleLogin(authToken);
+        return ResponseEntity.ok(response);
     }
 
 }

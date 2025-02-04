@@ -10,8 +10,13 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authService } from "@/lib/auth.service";
+import { toast } from "sonner";
+import { GoogleOAuthProvider, GoogleLogin, CredentialResponse } from "@react-oauth/google";
 
-// ... (keep existing schema)
+const API_URL = "http://localhost:8080/api/auth";
+
 const signupSchema = z
   .object({
     username: z.string().min(3, "Username must be at least 3 characters"),
@@ -26,22 +31,77 @@ const signupSchema = z
     path: ["confirmPassword"],
   });
 
+type SignupFormData = z.infer<typeof signupSchema>;
+
 export default function Signup() {
-  // ... (keep existing state and form setup)
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
   });
+////////////////////////////////////////////////////////////////////////////////////////
+const handleSignWithGoogle = async (credentialResponse: CredentialResponse) => {
+  if (!credentialResponse.credential) {
+      toast.error("No token received");
+      return;
+    }
 
-  const onSubmit = async (data: any) => {
     setIsLoading(true);
-    // Handle signup logic here
-    console.log(data);
-    setIsLoading(false);
+
+    try {
+      const result = await fetch(`${API_URL}/oauth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${credentialResponse.credential}`, // Sending the token in the Authorization header
+        },
+      });
+
+      if (result.ok) {
+        toast.success("Google login successful!");
+        router.push("/");
+      } else {
+        toast.error( "Google login failed");
+      }
+    } catch (error) {
+      toast.error("Error with Google login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  ////////////////////////////////////////////////////////////////////////////////////////
+  const onSubmit = async (data: SignupFormData) => {
+    console.log("Form submitted with data:", data); // Debug log
+    setIsLoading(true);
+
+    try {
+      const result = await authService.register({
+        username: data.username,
+        email: data.email,
+        password: data.password,
+        firstName: data.firstName,
+        lastName: data.lastName,
+      });
+
+      console.log("Registration result:", result); // Debug log
+
+      if (result.success) {
+        toast.success("Registration successful!");
+        router.push("/login");
+      } else {
+        toast.error(result.error || "Registration failed");
+      }
+    } catch (error) {
+      console.error("Registration error:", error); // Debug log
+      toast.error("An error occurred during registration");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -96,7 +156,6 @@ export default function Signup() {
                 alt="Logo"
                 className="h-[40px] w-[40px] bg-black rounded-full p-1"
               />
-
             </motion.h2>
             <p className="mt-2 text-sm text-gray-600">
               Already have an account?{" "}
@@ -207,6 +266,8 @@ export default function Signup() {
 
             <div>
               <Button
+                variant="submit"
+                disabled={isLoading}
                 title={isLoading ? "Creating account..." : "Create account"}
                 otherClasses="w-full justify-center"
               />
@@ -229,6 +290,12 @@ export default function Signup() {
               position="left"
               otherClasses="w-full justify-center"
             />
+            {/* <GoogleOAuthProvider clientId="453733820138-s7krehi0k2gt3tvv20mp9qkjetpnki9e.apps.googleusercontent.com">
+              <GoogleLogin
+                onSuccess={handleSignWithGoogle}
+                onError={() => toast.error("Google login failed")}
+              />
+            </GoogleOAuthProvider> */}
           </form>
         </motion.div>
       </div>

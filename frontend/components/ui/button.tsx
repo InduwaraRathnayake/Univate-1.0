@@ -24,10 +24,17 @@ const Button = ({
       onClick={handleClick}
       disabled={disabled}
       type={variant === "submit" ? "submit" : "button"}
+
     >
-      {position === "left" && icon}
-      {title}
-      {position === "right" && icon}
+      {title ? (
+        <>
+          {position === "left" && icon}
+          {title}
+          {position === "right" && icon}
+        </>
+      ) : (
+        icon
+      )}
     </button>
   );
 };

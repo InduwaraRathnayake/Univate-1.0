@@ -23,7 +23,8 @@ import org.springframework.security.config.Customizer;
 public class SecurityConfig {
 
     @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
+    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration)
+            throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
     }
 
@@ -32,17 +33,20 @@ public class SecurityConfig {
             throws Exception {
         http.csrf(customizer -> customizer.disable());
         http
-            .authorizeHttpRequests(request->request
-            .requestMatchers("/api/auth/**").permitAll()
-            .requestMatchers("/api/modules/**").permitAll()
-            .requestMatchers("/api/streams/**").permitAll()
-            .anyRequest().authenticated());
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/modules/**").permitAll()
+                        .requestMatchers("/api/streams/**").permitAll()
+                        .requestMatchers("/").permitAll()
+                        .anyRequest().authenticated());
 
-        http.httpBasic(Customizer.withDefaults()); 
+        http.httpBasic(Customizer.withDefaults());
 
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
+        http.oauth2Login(Customizer.withDefaults());
+                
         return http.build();
 
     }
