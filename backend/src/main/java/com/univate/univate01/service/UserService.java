@@ -13,6 +13,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -58,6 +60,8 @@ public class UserService implements UserDetailsService {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
+        user.setFirstName(request.getFirstName());
+        user.setLastName(request.getLastName());
         user.setRoles(List.of("Student"));
 
         userRepository.save(user);
@@ -84,16 +88,15 @@ public class UserService implements UserDetailsService {
                     "message", "Login successful!",
                     "token", token,
                     "user", Map.of(
-                        "email", user.getEmail(),
-                        "username", user.getUsername()
-                    )
-            );
+                            "email", user.getEmail(),
+                            "username", user.getUsername(),
+                            "firstName", user.getFirstName(),
+                            "lastName", user.getLastName()));
         }
-    
+
         return Map.of("message", "Invalid username or password");
 
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -112,5 +115,61 @@ public class UserService implements UserDetailsService {
                 .disabled(false)
                 .build();
     }
+
+    public void googleSignup(OAuth2AuthenticationToken authToken) {
+        OAuth2User oauthUser = authToken.getPrincipal();
+
+        // Extract Google user details
+        String email = oauthUser.getAttribute("email");
+        String picture = oauthUser.getAttribute("picture");
+        String givenName = oauthUser.getAttribute("given_name"); // First name
+        String familyName = oauthUser.getAttribute("family_name"); // Last name
+
+        // Check if user already exists
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new IllegalArgumentException("User already exists! Please login.");
+        }
+
+        // Register the new user
+        User user = new User();
+        user.setEmail(email);
+        user.setUsername(email); // Use email as username
+        user.setFirstName(givenName);
+        user.setLastName(familyName);
+        user.setProfilePicture(picture);
+        user.setRoles(List.of("Student"));
+
+        userRepository.save(user);
+
+    }
+
+    public Map<String, Object> googleLogin(OAuth2AuthenticationToken authToken) {
+        OAuth2User oauthUser = authToken.getPrincipal();
+    
+        // Extract Google user details
+        String email = oauthUser.getAttribute("email");
+    
+        // Find user in DB
+        User user = userRepository.findByEmail(email).orElse(null);
+    
+        if (user == null) {
+            return Map.of("message", "User not found. Please sign up.");
+        }
+    
+        // Generate JWT token
+        String token = jwtHelper.generateToken(user);
+    
+        return Map.of(
+                "message", "Login successful!",
+                "token", token,
+                "user", Map.of(
+                        "email", user.getEmail(),
+                        "username", user.getUsername(),
+                        "firstName", user.getFirstName(),
+                        "lastName", user.getLastName()
+                )
+        );
+    }
+    
 
 }

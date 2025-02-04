@@ -1,11 +1,12 @@
 "use client";
 
-import { Menu } from "lucide-react";
+import { Menu, User } from "lucide-react";
 import Link from "next/link";
 import Button from "./ui/button";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
+import { AnimatedTooltip } from "./ui/animated-tooltip";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,6 +15,8 @@ export function Navbar() {
   const handleSignInClick = () => {
     router.push("/login");
   };
+
+  const user = localStorage.getItem("user");
 
   return (
     <nav className="fixed w-full z-50 ">
@@ -55,18 +58,36 @@ export function Navbar() {
                 Career Guidance
               </Link>
               <Link
-                    href="/#contact"
-                    className="text-border-black hover:text-gray-600 transition-colors"
-                   
-                  >
-                    Contact
-                  </Link>
+                href="/#contact"
+                className="text-border-black hover:text-gray-600 transition-colors"
+              >
+                Contact
+              </Link>
               <div className="flex items-center space-x-2">
-                <Button
-                  title="Sign In"
-                  otherClasses="text-white hover:text-gray-200"
-                  handleClick={handleSignInClick}
-                />
+                {user ? (
+                  <>
+                    <Link href="/user">
+                      <AnimatedTooltip
+                        items={[
+                          {
+                            id: 1,
+                            name: `${JSON.parse(user).firstName}`,
+                            designation: "Visit Your Profile",
+                            icon: (
+                              <User className="h-12 w-12 p-2 mr-5 text-white inline-flex animate-shimmer items-center rounded-full bg-[linear-gradient(110deg,black,45%,gray,55%,black)] bg-[length:200%_100%] hover:scale-105" />
+                            ),
+                          },
+                        ]}
+                      />
+                    </Link>
+                  </>
+                ) : (
+                  <Button
+                    title="Sign In"
+                    otherClasses="text-white hover:text-gray-200"
+                    handleClick={handleSignInClick}
+                  />
+                )}
               </div>
             </div>
 
@@ -121,11 +142,27 @@ export function Navbar() {
                   </Link>
                   <hr className="border-white/20" />
 
-                  <Button
-                    title="Sign In"
-                    otherClasses="text-white hover:text-gray-200 justify-center"
-                    handleClick={() => { handleSignInClick(); setIsOpen(false); }}
-                  />
+                  {user ? (
+                    <Button
+                      title={`${JSON.parse(user).firstName}`}
+                      otherClasses="text-white hover:text-gray-200 justify-center gap-5"
+                      handleClick={() => {
+                        router.push("/user");
+                        setIsOpen(false);
+                      }}
+                      icon={<User className="h-8 w-8" />}
+                      position="left"
+                    />
+                  ) : (
+                    <Button
+                      title="Sign In"
+                      otherClasses="text-white hover:text-gray-200 justify-center"
+                      handleClick={() => {
+                        handleSignInClick();
+                        setIsOpen(false);
+                      }}
+                    />
+                  )}
                 </div>
               </div>
             </motion.div>

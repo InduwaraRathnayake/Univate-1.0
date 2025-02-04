@@ -10,26 +10,77 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { authService } from "@/lib/auth.service";
+import { toast } from "sonner";
+
+import {
+  GoogleLogin,
+  GoogleOAuthProvider,
+  CredentialResponse,
+} from "@react-oauth/google";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
-  password: z.string().min(8, "Password must be at least 8 characters"),
+  password: z.string().min(1, "Password is required"),
 });
 
+type LoginFormData = z.infer<typeof loginSchema>;
+
 export default function Login() {
+  const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
-
-  const onSubmit = async (data: any) => {
+ ///////////////////////////////////////////////////////////////////////////////
+  const handleLoginWithGoogle = async (credentialResponse: CredentialResponse) => {
+    if (!credentialResponse.credential) {
+      toast.error("No token received");
+      return;
+    }
     setIsLoading(true);
-    console.log(data);
-    setIsLoading(false);
+    try {
+      const result = await authService.loginWithGoogle(credentialResponse.credential);
+      if (result.success) {
+        toast.success("Google login successful!");
+        router.push("/");
+      } else {
+        toast.error(result.error || "Google login failed");
+      }
+    } catch (error) {
+      toast.error("Error with Google login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+  /////////////////////////////////////////////////////////////////////////
+
+  const onSubmit = async (data: LoginFormData) => {
+    console.log("Form submitted:", data); // Debug log
+    setIsLoading(true);
+
+    try {
+      const result = await authService.login(data.email, data.password);
+      console.log("Login response:", result); // Debug log
+
+      if (result.success) {
+        toast.success("Login successful!");
+        router.push("/");
+      } else {
+        toast.error(result.error || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error); // Debug log
+      toast.error("An error occurred during login");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -121,10 +172,11 @@ export default function Login() {
                   type="password"
                   {...register("password")}
                   className="mt-1"
+                  placeholder="Enter your password"
                 />
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.password.message as string}
+                    {errors.password.message}
                   </p>
                 )}
               </div>
@@ -132,8 +184,10 @@ export default function Login() {
 
             <div>
               <Button
+                variant="submit"
                 title={isLoading ? "Signing in..." : "Sign in"}
                 otherClasses="w-full justify-center"
+                disabled={isLoading}
               />
             </div>
 
@@ -153,6 +207,13 @@ export default function Login() {
               position="left"
               otherClasses="w-full justify-center"
             />
+
+            {/* <GoogleOAuthProvider clientId="453733820138-s7krehi0k2gt3tvv20mp9qkjetpnki9e.apps.googleusercontent.com">
+              <GoogleLogin
+                onSuccess={handleLoginWithGoogle}
+                onError={() => toast.error("Google login failed")}
+              />
+            </GoogleOAuthProvider> */}
           </form>
         </motion.div>
       </div>

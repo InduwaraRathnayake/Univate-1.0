@@ -21,4 +21,7 @@ public class User {
     private String email;
     private String password;
     private List<String> roles;
+    private String firstName;
+    private String lastName;
+    private String profilePicture;
 }
