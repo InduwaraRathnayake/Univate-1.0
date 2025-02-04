@@ -2,14 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Vortex } from "@/components/ui/vortex";
-import {
-  FaDatabase,
-} from "react-icons/fa";
+import { FaDatabase } from "react-icons/fa";
+import DSEFeatures from "@/components/DSEFeatures";
+import TabsComponent from "@/components/StreamTable";
 
 const DSE = () => {
   interface Data {
     careers: { title: string; description: string }[];
-    companies: { name: string; logo_url: string }[]; 
+    companies: { name: string; logo_url: string }[];
   }
 
   const [data, setData] = useState<Data | null>(null);
@@ -18,21 +18,21 @@ const DSE = () => {
     const fetchData = async () => {
       try {
         const response = await axios.get("http://localhost:8080/api/streams/1"); // Replace with your backend URL
-        setData(response.data); 
+        setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
 
-    fetchData(); 
-  }, []); 
+    fetchData();
+  }, []);
 
   if (!data) {
     return <div>Loading...</div>;
   }
 
   const careers = data.careers.map((career) => ({
-    icon: <FaDatabase />, 
+    icon: <FaDatabase />,
     title: career.title,
     description: career.description,
   }));
@@ -57,6 +57,8 @@ const DSE = () => {
           </p>
         </Vortex>
       </div>
+
+      <DSEFeatures />
 
       <section className="bg-black text-white p-8 min-h-screen">
         <div className="text-center">
@@ -93,7 +95,7 @@ const DSE = () => {
             {[...companies, ...companies].map((company, index) => (
               <div
                 key={index}
-                className="rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                className="rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 border-2 border-gray-200"
                 role="button"
                 aria-label={`Shop ${company.name}`}
                 style={{ minWidth: "200px" }}
@@ -103,12 +105,10 @@ const DSE = () => {
                   alt={`Logo of ${company.name}`}
                   className="w-32 h-32 object-contain"
                 />
-                
               </div>
             ))}
           </div>
-        </div>
-
+        </div>       
         <style jsx>{`
           @keyframes scroll {
             0% {
@@ -120,6 +120,25 @@ const DSE = () => {
           }
         `}</style>
       </section>
+
+      <section className="p-8 bg-black overflow-hidden min-h-screen">
+        <h2 className="text-4xl font-bold text-white mt-10 mb-10 text-center">
+          Curriculum Structure & Credits Breakdown
+        </h2>
+        <p className="text-lg text-gray-300 text-center mb-8">
+          The following table outlines the modules for each semester in the Data
+          Science & Engineering program. Each module is accompanied by its
+          respective module code, title, and the number of credits. The total
+          credits for each semester are calculated based on the sum of the
+          credits for all modules.
+        </p>
+        <div className="flex justify-center">
+          <div className="w-full max-w-4xl">
+          <TabsComponent streamName={1} />
+          </div>
+        </div>
+      </section>
+
     </main>
   );
 };
