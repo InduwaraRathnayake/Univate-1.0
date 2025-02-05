@@ -1,7 +1,9 @@
 package com.univate.univate01.controller;
 
+import com.univate.univate01.service.GoogleAuthService;
 import com.univate.univate01.service.UserService;
 import com.univate.univate01.dto.RegisterRequest;
+//import com.univate.univate01.model.User;
 import com.univate.univate01.dto.LoginRequest;
 
 import java.util.Map;
@@ -24,6 +26,11 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private GoogleAuthService googleAuthService;
+
+    
 
     @PostMapping("/register")
     public ResponseEntity<Map<String, String>> registerUser(@RequestBody RegisterRequest request) {
@@ -67,5 +74,34 @@ public class AuthController {
         Map<String, Object> response = userService.googleLogin(authToken);
         return ResponseEntity.ok(response);
     }
+
+
+
+
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> request) {
+        try {
+            String credential = request.get("credential");
+            Map<String, Object> response = userService.handleGoogleLogin(credential);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
+                    "message", "Google login failed",
+                    "error", e.getMessage()
+            ));
+        }
+    }
+
+    // private User createNewUser(GoogleAuthService.GoogleToken googleToken) {
+    //     User newUser = new User();
+    //     newUser.setEmail(googleToken.email());
+    //     newUser.setUsername(googleToken.email()); // or use name
+    //     newUser.setProvider("google");
+    //     newUser.setProviderId(googleToken.providerId());
+    //     newUser.setImageUrl(googleToken.imageUrl());
+    //     return userRepository.save(newUser);
+    // }
+
+
 
 }

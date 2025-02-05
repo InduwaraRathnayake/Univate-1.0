@@ -14,6 +14,8 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/lib/auth.service";
 import { toast } from "sonner";
 
+
+
 import {
   GoogleLogin,
   GoogleOAuthProvider,
@@ -208,12 +210,12 @@ export default function Login() {
               otherClasses="w-full justify-center"
             />
 
-            {/* <GoogleOAuthProvider clientId="453733820138-s7krehi0k2gt3tvv20mp9qkjetpnki9e.apps.googleusercontent.com">
+            <GoogleOAuthProvider clientId="331098794690-djjan66pid5h1ca1gi6p3fo31d712gj1.apps.googleusercontent.com">
               <GoogleLogin
                 onSuccess={handleLoginWithGoogle}
                 onError={() => toast.error("Google login failed")}
               />
-            </GoogleOAuthProvider> */}
+            </GoogleOAuthProvider>
           </form>
         </motion.div>
       </div>
