@@ -4,11 +4,15 @@ import com.univate.univate01.model.User;
 import com.univate.univate01.repository.UserRepository;
 import com.univate.univate01.dto.RegisterRequest;
 
+import java.security.GeneralSecurityException;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import com.univate.univate01.util.JwtHelper;
+
+import java.io.IOException;
+
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -169,6 +173,47 @@ public class UserService implements UserDetailsService {
                         "lastName", user.getLastName()
                 )
         );
+    }
+
+
+
+
+    @Autowired
+    private GoogleAuthService googleAuthService;
+
+    public Map<String, Object> handleGoogleLogin(String credential) throws GeneralSecurityException, java.io.IOException {
+        // Verify Google token
+        GoogleAuthService.GoogleToken googleToken = googleAuthService.verify(credential);
+
+        // Find or create user
+        User user = findOrCreateUser(googleToken);
+
+        // Generate JWT
+        String token = jwtHelper.generateToken(user);
+
+        // Return response
+        return Map.of(
+                "token", token,
+                "user", user
+        );
+    }
+
+    private User findOrCreateUser(GoogleAuthService.GoogleToken googleToken) {
+        return userRepository.findByEmail(googleToken.email())
+                .orElseGet(() -> createNewUser(googleToken));
+    }
+
+    private User createNewUser(GoogleAuthService.GoogleToken googleToken) {
+        User newUser = new User();
+        System.out.println();
+        System.out.println("Creating new user: \n\n\n\n\n" + googleToken);
+        newUser.setEmail(googleToken.email());
+        newUser.setUsername(googleToken.email()); // or use name
+        newUser.setProvider("google");
+        newUser.setProviderId(googleToken.providerId());
+        newUser.setImageUrl(googleToken.imageUrl());
+
+        return userRepository.save(newUser);
     }
     
 
