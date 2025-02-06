@@ -6,7 +6,7 @@ const nextConfig: NextConfig = {
     ignoreBuildErrors: true,
   }, reactStrictMode: true,
   images: {
-    domains: ["images.unsplash.com"],
+    domains: [],
   },
 };
 

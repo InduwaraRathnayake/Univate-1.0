@@ -3,18 +3,25 @@
 import { Menu, User } from "lucide-react";
 import Link from "next/link";
 import Button from "./ui/button";
-import { useState } from "react";
+import { useState , useEffect} from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import { AnimatedTooltip } from "./ui/animated-tooltip";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
+  // const [user, setUser] = useState<string | null>(null);
   const router = useRouter();
 
   const handleSignInClick = () => {
     router.push("/login");
   };
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     setUser(localStorage.getItem("user"));
+  //   }
+  // }, []);
 
   const user = localStorage.getItem("user");
 
