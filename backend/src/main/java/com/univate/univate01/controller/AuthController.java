@@ -1,6 +1,6 @@
 package com.univate.univate01.controller;
 
-import com.univate.univate01.service.GoogleAuthService;
+// import com.univate.univate01.service.GoogleAuthService;
 import com.univate.univate01.service.UserService;
 import com.univate.univate01.dto.RegisterRequest;
 //import com.univate.univate01.model.User;
@@ -10,7 +10,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
+// import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 import org.slf4j.Logger;
@@ -26,9 +26,6 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
-
-    @Autowired
-    private GoogleAuthService googleAuthService;
 
     
 
@@ -59,49 +56,21 @@ public class AuthController {
 
     }
 
-    @GetMapping("/oauth/signup")
-    public ResponseEntity<Map<String, Object>> googleSignup(OAuth2AuthenticationToken authToken) {
-        try {
-            userService.googleSignup(authToken);
-            return ResponseEntity.ok(Map.of("message", "User registered successfully!"));
-        } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
-        }
-    }
-
-    @GetMapping("/oauth/login")
-    public ResponseEntity<Map<String, Object>> googleLogin(OAuth2AuthenticationToken authToken) {
-        Map<String, Object> response = userService.googleLogin(authToken);
-        return ResponseEntity.ok(response);
-    }
-
-
-
-
-    @PostMapping("/google")
+    @PostMapping("/oauth/google")
     public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> request) {
         try {
             String credential = request.get("credential");
+            System.out.println("Received credential: " + credential); // Debugging
+            
             Map<String, Object> response = userService.handleGoogleLogin(credential);
+            System.out.println("Response: before send :  " + response); // Debugging
             return ResponseEntity.ok(response);
         } catch (Exception e) {
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of(
-                    "message", "Google login failed",
-                    "error", e.getMessage()
+                "message", "Google login failed",
+                "error", e.getMessage()
             ));
         }
     }
-
-    // private User createNewUser(GoogleAuthService.GoogleToken googleToken) {
-    //     User newUser = new User();
-    //     newUser.setEmail(googleToken.email());
-    //     newUser.setUsername(googleToken.email()); // or use name
-    //     newUser.setProvider("google");
-    //     newUser.setProviderId(googleToken.providerId());
-    //     newUser.setImageUrl(googleToken.imageUrl());
-    //     return userRepository.save(newUser);
-    // }
-
-
-
 }

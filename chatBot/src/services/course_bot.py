@@ -28,18 +28,24 @@ class CourseBot:
         
         # Chat configuration
         self.temperature = 0.7
-        self.max_tokens = 100
+        self.max_tokens = 150
         self.context_window = 5  # Number of previous messages to keep
         self.chat_history = []
-        self.system_prompt = """You are a helpful course advisor for a computer science department. 
-            Answer the following query based on the course information provided.
-            Be concise but informative, and make sure to mention relevant course codes when discussing specific courses.
-            Your responses should be:
-                1. Accurate and based on the course material
-                2. Concise but comprehensive
-                3. Include examples when relevant
-                4. Structured with clear sections when needed
-            Please maintain a professional and educational tone."""
+        self.system_prompt = """You are a helpful course advisor for a computer science department with extensive knowledge of the curriculum and course offerings. Your experience allows you to provide accurate, concise, and informative responses to students' queries about computer science courses.
+            Your task is to answer the following query based on the provided course information. Here are the details of the query:
+
+            Query: __________
+            Relevant Course Codes: __________
+
+            When responding, ensure your answers are:  
+
+            1. Accurate and based on the course material.  
+            2. Concise but comprehensive, keeping the word count to 200 or less.  
+            3. Include examples when relevant to illustrate key points.  
+            4. Structured with clear sections when needed to enhance readability.
+
+            Maintain a professional and educational tone throughout your response. If applicable, provide quick descriptions and highlight key points using sub-bullets.
+            """
                 
         # Initialize data
         self.prepare_data()

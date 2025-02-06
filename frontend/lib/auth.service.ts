@@ -62,29 +62,27 @@ export const authService = {
     }
   },
 
-  async loginWithGoogle(googleToken: string) {
+  async loginWithGoogle(googleAuthData: any) {
     try {
-      console.log("Sending Google login request:", googleToken); // Debug log
+      console.log("Google credential response:", googleAuthData);
 
-      const response = await fetch(`${API_URL}/oauth/login`, {
+      const response = await fetch("http://localhost:8080/api/auth/oauth/google", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${googleToken}`, // Sending the token in the Authorization header
-        },
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ credential: googleAuthData }),
       });
 
       const data = await response.json();
-      console.log("Google Login response:", data); // Debug log
+      console.log("Backend response:", data);
 
-      if (response.ok && data.token) {
+      if (data.token && data.user) {
         localStorage.setItem("token", `Bearer ${data.token}`);
         localStorage.setItem("user", JSON.stringify(data.user));
-        return { success: true, data };
+        return { success: true, message: data.message };
       }
       return { success: false, error: data.message };
     } catch (error) {
-      console.error("Google login error:", error);
+      console.error("Login error:", error);
       return {
         success: false,
         error:

@@ -4,7 +4,6 @@ import { motion } from "framer-motion";
 import Button from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Mail } from "lucide-react";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,13 +13,12 @@ import { useRouter } from "next/navigation";
 import { authService } from "@/lib/auth.service";
 import { toast } from "sonner";
 
-
-
 import {
   GoogleLogin,
   GoogleOAuthProvider,
   CredentialResponse,
 } from "@react-oauth/google";
+import Script from "next/script";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -40,28 +38,6 @@ export default function Login() {
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   });
- ///////////////////////////////////////////////////////////////////////////////
-  const handleLoginWithGoogle = async (credentialResponse: CredentialResponse) => {
-    if (!credentialResponse.credential) {
-      toast.error("No token received");
-      return;
-    }
-    setIsLoading(true);
-    try {
-      const result = await authService.loginWithGoogle(credentialResponse.credential);
-      if (result.success) {
-        toast.success("Google login successful!");
-        router.push("/");
-      } else {
-        toast.error(result.error || "Google login failed");
-      }
-    } catch (error) {
-      toast.error("Error with Google login");
-    } finally {
-      setIsLoading(false);
-    }
-  };
-  /////////////////////////////////////////////////////////////////////////
 
   const onSubmit = async (data: LoginFormData) => {
     console.log("Form submitted:", data); // Debug log
@@ -75,7 +51,30 @@ export default function Login() {
         toast.success("Login successful!");
         router.push("/");
       } else {
-        toast.error(result.error || "Login failed");
+        toast.error(result?.error || "Login failed");
+      }
+    } catch (error) {
+      console.error("Login error:", error); // Debug log
+      toast.error("An error occurred during login");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleResponse = async (response: CredentialResponse) => {
+    setIsLoading(true);
+    console.log("Full Google response:", response);
+    console.log("Google credential response:", response.credential);
+
+    try {
+      const result = await authService.loginWithGoogle(response.credential);
+      console.log("Backend response:", result); // Debug log
+
+      if (result?.success) {
+        toast.success("Login successful!");
+        router.push("/");
+      } else {
+        toast.error(result?.error || "Login failed");
       }
     } catch (error) {
       console.error("Login error:", error); // Debug log
@@ -91,7 +90,7 @@ export default function Login() {
       <div className="hidden lg:flex lg:w-1/2 relative">
         <div className="absolute inset-0 bg-black/40 z-10" />
         <img
-          src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"
+          src="./loginCover.png"
           alt="Computer Science Student"
           className="object-cover w-full h-full"
         />
@@ -113,7 +112,6 @@ export default function Login() {
             Your Personalized Guide to Success in Computer Science and
             Engineering!
           </motion.h1>
-          {/* add logo to middle of the picture with animation */}
         </div>
       </div>
       {/* Right side - Login form */}
@@ -203,18 +201,20 @@ export default function Login() {
                 </span>
               </div>
             </div>
-            <Button
-              title="Google"
-              icon={<Mail className="mr-2 h-4 w-4" />}
-              position="left"
-              otherClasses="w-full justify-center"
-            />
-
-            <GoogleOAuthProvider clientId="331098794690-djjan66pid5h1ca1gi6p3fo31d712gj1.apps.googleusercontent.com">
-              <GoogleLogin
-                onSuccess={handleLoginWithGoogle}
-                onError={() => toast.error("Google login failed")}
-              />
+            <GoogleOAuthProvider clientId="453733820138-s7krehi0k2gt3tvv20mp9qkjetpnki9e.apps.googleusercontent.com">
+              <div className="inline-flex h-12 animate-shimmer items-center justify-center rounded-full bg-[linear-gradient(110deg,black,45%,gray,55%,black)] bg-[length:200%_100%] object-fill w-full">
+                <GoogleLogin
+                  onSuccess={handleGoogleResponse}
+                  onError={() => {
+                    toast.error("Google login failed");
+                  }}
+                  theme="filled_black"
+                  size="large"
+                  shape="pill"
+                  text="signin_with"
+                  width={300}
+                />
+              </div>
             </GoogleOAuthProvider>
           </form>
         </motion.div>

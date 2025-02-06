@@ -23,8 +23,6 @@ public class User {
     private List<String> roles;
     private String firstName;
     private String lastName;
-    private String profilePicture;
-
     private String provider;          // "google"
     private String providerId;        // Google's unique ID
     private String imageUrl;          // Profile picture URL
