@@ -18,7 +18,6 @@ import {
   GoogleOAuthProvider,
   CredentialResponse,
 } from "@react-oauth/google";
-import Script from "next/script";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
