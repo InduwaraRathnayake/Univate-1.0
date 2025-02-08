@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import Loader from "@/components/ui/lodder";
+import Image from "next/image";
+import ErrorPage from "@/components/Error";
 
 const fetchModuleDetails = async (moduleId: string) => {
   const response = await fetch(`http://localhost:8080/api/modules/${moduleId}`);
@@ -38,7 +40,13 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
   if (loading) {
     return (
       <div className="h-full flex justify-center items-center min-h-screen flex-col">
-        <Loader />
+        <Image
+          src={"./univateLodder.svg"}
+          alt={"Lodder"}
+          width={600}
+          height={300}
+        />
+        {/* <Loader /> */}
         <p className="text-white text-xl mt-4">
           Loading the module please wait...
         </p>
@@ -48,11 +56,7 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
 
   if (error || !moduleDetails) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <p className="text-red-500 text-lg">
-          {error || "Error: Module not found"}
-        </p>
-      </div>
+      <ErrorPage/>
     );
   }
 
@@ -138,8 +142,6 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
             </section>
 
             <section className="mb-8">
-
-          
               <h2 className="text-xl font-semibold text-black mb-3">
                 Syllabus Outline
               </h2>

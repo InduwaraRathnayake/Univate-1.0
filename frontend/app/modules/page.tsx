@@ -4,8 +4,10 @@ import React, { useEffect, useState } from "react";
 import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-vanish-input";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import Loader from "@/components/ui/lodder";
+// import Loader from "@/components/ui/lodder";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import ErrorPage from "@/components/Error";
 
 const Modules = () => {
   const [modules, setModules] = useState([]);
@@ -57,7 +59,14 @@ const Modules = () => {
   if (loading) {
     return (
       <div className="h-full flex justify-center items-center min-h-screen flex-col">
-        <Loader />
+        {/* import a svg */}
+        <Image
+          src={"./univateLodder.svg"}
+          alt={"Lodder"}
+          width={600}
+          height={300}
+        />
+        {/* <Loader /> */}
         <p className="text-white text-xl mt-4">
           Loading modules, please wait...
         </p>
@@ -67,10 +76,7 @@ const Modules = () => {
 
   if (error) {
     return (
-      // <div className="h-full flex justify-center items-center">
-      //   <p className="text-red-500 text-xl">Error: {error}</p>
-      // </div>
-      router.push("/not_found")
+      <ErrorPage/>
     );
   }
 
