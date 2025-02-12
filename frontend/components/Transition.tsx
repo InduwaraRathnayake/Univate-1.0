@@ -13,7 +13,7 @@ const TransitionPage = ({ children }: { children: React.ReactNode }) => {
     enter: (index: number) => ({
       left: "100vw",
       transition: {
-        duration: 0.5,
+        duration: 0.3,
         delay: 0.2 * index,
         ease: "easeIn",
       },
@@ -21,7 +21,7 @@ const TransitionPage = ({ children }: { children: React.ReactNode }) => {
     exit: (index: number) => ({
       width: "100vw",
       transition: {
-        duration: 0.5,
+        duration: 0,
         delay: 0.2 * index,
         ease: "easeIn",
       },
@@ -38,8 +38,8 @@ const TransitionPage = ({ children }: { children: React.ReactNode }) => {
               variants={columnsExpandVariants}
               initial="initial"
               animate="enter"
-              exit="exit"
-              custom={numOfCols + i}
+              // exit="exit"
+              custom={(numOfCols + i)*0.4}
               className="bg-white relative w-full h-full flex items-center justify-center"
             > 
               {/* center the image */}
@@ -56,8 +56,8 @@ const TransitionPage = ({ children }: { children: React.ReactNode }) => {
               variants={columnsExpandVariants}
               initial="initial"
               animate="enter"
-              exit="exit"
-              custom={numOfCols + i}
+              // exit="exit"
+              custom={(numOfCols + i)*0.4}
               className="bg-white relative w-full h-full flex items-center justify-center"
             >
               {/* Display a quote */}
@@ -69,8 +69,8 @@ const TransitionPage = ({ children }: { children: React.ReactNode }) => {
               variants={columnsExpandVariants}
               initial="initial"
               animate="enter"
-              exit="exit"
-              custom={numOfCols + i}
+              // exit="exit"
+              custom={(numOfCols + i)*0.4}
               className="bg-white relative w-full h-full"
             />
           )
