@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Vortex } from "@/components/ui/vortex";
 import { FaLaptopCode } from "react-icons/fa"; 
+import MainFeatures from "@/components/MainFeatures";
 
 const Main = () => {
   interface Data {
@@ -52,6 +53,8 @@ const Main = () => {
           </p>
         </Vortex>
       </div>
+
+      <MainFeatures />
 
       <section className="bg-black text-white p-8 min-h-screen">
         <div className="text-center">
