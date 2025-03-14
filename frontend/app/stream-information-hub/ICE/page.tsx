@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Vortex } from "@/components/ui/vortex";
 import { FaRobot } from "react-icons/fa";
+import ICESection from "@/components/ICEFeatures";
 
 const ICE = () => {
   interface Data {
@@ -54,6 +55,8 @@ const ICE = () => {
           </p>
         </Vortex>
       </div>
+
+      <ICESection />
 
       <section className="bg-black text-white p-8 min-h-screen">
         <div className="text-center">

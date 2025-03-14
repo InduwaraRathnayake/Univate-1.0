@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Vortex } from "@/components/ui/vortex";
 import { FaShieldAlt } from "react-icons/fa";
+import CSFeatureSection from "@/components/CSFeatures";
 
 const CyS = () => {
   // State to store the fetched data
@@ -58,6 +59,8 @@ const CyS = () => {
           </p>
         </Vortex>
       </div>
+
+      <CSFeatureSection />
 
       <section className="bg-black text-white p-8 min-h-screen">
         <div className="text-center">

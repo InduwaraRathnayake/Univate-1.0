@@ -5,7 +5,7 @@ import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
 const teamMembers = [
   {
     id: 1,
-    name: 'Mike Johnson',
+    name: 'Induwara Rathnayake',
     role: 'CSE Undergraduate' ,
     university:' University of Moratuwa',
     image: '/member.jpg',
@@ -16,7 +16,7 @@ const teamMembers = [
   },
   {
     id: 2,
-    name: 'Mike Johnson',
+    name: 'Pasindu Ravishan',
     role: 'CSE Undergraduate',
     university:' University of Moratuwa',
     image: '/member.jpg',
@@ -27,7 +27,7 @@ const teamMembers = [
   },
   {
     id: 3,
-    name: 'Mike Johnson',
+    name: 'Pathumi Ranasinghe',
     role: 'CSE Undergraduate',
     university:' University of Moratuwa',
     image: '/member.jpg',
@@ -38,7 +38,7 @@ const teamMembers = [
   },
   {
     id: 4,
-    name: 'Mike Johnson',
+    name: 'Chehan Dissanayake',
     role: 'CSE Undergraduate',
     university:' University of Moratuwa',
     image: '/member.jpg',
