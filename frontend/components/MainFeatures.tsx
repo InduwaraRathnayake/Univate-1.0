@@ -5,26 +5,30 @@ const categories = [
     id: 1,
     name: "Data Structures & Algorithms",
     image: "/main1.jpg",
-    description: "Learn the foundations of computer science, including sorting algorithms, trees, and graphs."
+    description:
+      "Learn the foundations of computer science, including sorting algorithms, trees, and graphs.",
   },
   {
     id: 2,
     name: "Software Engineering",
     image: "/main2.jpeg",
-    description: "Explore the principles and practices of software development, including design patterns and testing."
+    description:
+      "Explore the principles and practices of software development, including design patterns and testing.",
   },
   {
     id: 4,
     name: "Database Systems",
     image: "/main3.jpg",
-    description: "Study relational databases, SQL, and how data is stored, managed, and queried."
+    description:
+      "Study relational databases, SQL, and how data is stored, managed, and queried.",
   },
   {
     id: 5,
     name: "Networking",
     image: "/main4.webp",
-    description: "Dive into computer networking concepts, protocols, and how data communication works in modern systems."
-  }
+    description:
+      "Dive into computer networking concepts, protocols, and how data communication works in modern systems.",
+  },
 ];
 
 const MainFeatures = () => {
