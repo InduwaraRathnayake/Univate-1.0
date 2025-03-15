@@ -4,6 +4,7 @@ import axios from "axios";
 import { Vortex } from "@/components/ui/vortex";
 import { FaRobot } from "react-icons/fa";
 import ICESection from "@/components/ICEFeatures";
+import TabsComponent from "@/components/StreamTable";
 
 const ICE = () => {
   interface Data {
@@ -93,7 +94,7 @@ const ICE = () => {
             {[...companies, ...companies].map((company, index) => (
               <div
                 key={index}
-                className="rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+                className="rounded-lg p-6 flex flex-col items-center justify-center transition-all duration-300 border-2 border-gray-200"
                 role="button"
                 aria-label={`Shop ${company.name}`}
                 style={{ minWidth: "200px" }}
@@ -119,6 +120,23 @@ const ICE = () => {
           }
         `}</style>
       </section>
+
+      <section className="p-8 bg-black overflow-hidden min-h-screen">
+              <h2 className="text-4xl font-bold text-white mt-10 mb-10 text-center">
+                Curriculum Structure & Credits Breakdown
+              </h2>
+              <p className="text-lg text-gray-300 text-center mb-8">
+                The following table outlines the modules for each semester in the Integrated Computer Engineering program. Each module is accompanied by its
+                respective module code, title, and the number of credits. The total
+                credits for each semester are calculated based on the sum of the
+                credits for all modules.
+              </p>
+              <div className="flex justify-center">
+                <div className="w-full max-w-4xl">
+                <TabsComponent streamName={3} />
+                </div>
+              </div>
+            </section>
     </main>
   );
 };

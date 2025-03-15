@@ -30,7 +30,7 @@ const teamMembers = [
     name: 'Pathumi Ranasinghe',
     role: 'CSE Undergraduate',
     university:' University of Moratuwa',
-    image: '/member.jpg',
+    image: '/member3.jpeg',
     description: 'Empathetic researcher uncovering deep user insights.',
     linkedin: 'www.linkedin.com/in/pathumi-ranasinghe',
     github: 'https://github.com/PathumiRanasinghe',
