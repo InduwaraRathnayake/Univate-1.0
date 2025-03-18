@@ -44,7 +44,7 @@ const TransitionPage = ({ children }: { children: React.ReactNode }) => {
             > 
               {/* center the image */}
               <Image
-                src={"./logoFill.svg"}
+                src={"/logoFill.svg"}
                 alt={"Lodder"}
                 width={600}
                 height={300}

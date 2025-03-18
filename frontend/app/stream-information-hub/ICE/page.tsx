@@ -17,7 +17,7 @@ const ICE = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/streams/3"); // Replace with your backend URL
+        const response = await axios.get(`${process.env.API_URL}/streams/3`); // Replace with your backend URL
         setData(response.data); 
       } catch (error) {
         console.error("Error fetching data:", error);

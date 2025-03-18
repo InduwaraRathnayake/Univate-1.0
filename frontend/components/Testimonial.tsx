@@ -90,7 +90,7 @@ const Testimonial = () => {
                     {testimonials.map((testimonial) => (
                       <div key={testimonial.id} className="w-full flex-shrink-0 px-4 md:px-6">
                         <div className="space-y-4">
-                          <p className="italic">"{testimonial.text}"</p>
+                          <p className="italic">&quot;{testimonial.text}&quot;</p>
                           <div>
                             <p className="font-semibold text-gray-800">{testimonial.name}</p>
                             <p className="text-sm text-gray-500">{testimonial.designation}</p>

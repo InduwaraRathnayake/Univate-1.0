@@ -38,12 +38,12 @@ export function Navbar() {
     };
   }, []);
 
-  // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // Remove user data
-    updateUser(); // Update UI
-    router.push("/login"); // Redirect to login page
-  };
+  // // Handle logout
+  // const handleLogout = () => {
+  //   localStorage.removeItem("user"); // Remove user data
+  //   updateUser(); // Update UI
+  //   router.push("/login"); // Redirect to login page
+  // };
 
   return (
     <nav className="fixed w-full z-50">

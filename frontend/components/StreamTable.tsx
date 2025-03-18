@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 
 interface TabsComponentProps {
-  streamName: Number;
+  streamName: number;
 }
 
 interface ModuleDetails {
@@ -24,7 +24,7 @@ const TabsComponent: React.FC<TabsComponentProps> = ({ streamName }) => {
   const fetchModules = async () => {
     setLoading(true);
     try {
-      const response = await fetch(`http://localhost:8080/api/streams/${streamName}`); // Replace with your backend URL
+      const response = await fetch(`${process.env.API_URL}/streams/${streamName}`); // Replace with your backend URL
       const data = await response.json();
       console.log(data.sem1);
 
@@ -55,7 +55,7 @@ const TabsComponent: React.FC<TabsComponentProps> = ({ streamName }) => {
 
 const fetchModuleDetails = async (moduleCode: string): Promise<ModuleDetails | null> => {
     try {
-      const response = await fetch(`http://localhost:8080/api/modules/search/${moduleCode}`);
+      const response = await fetch(`${process.env.API_URL}/modules/search/${moduleCode}`);
   
   
       if (!response.ok) {

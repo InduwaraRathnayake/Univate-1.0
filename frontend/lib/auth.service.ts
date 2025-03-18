@@ -1,11 +1,9 @@
-const API_URL = "http://localhost:8080/api/auth";
-
 export const authService = {
   async login(email: string, password: string) {
     try {
       console.log("Sending login request:", { email }); // Debug log
 
-      const response = await fetch(`${API_URL}/login`, {
+      const response = await fetch(`${process.env.API_URL}/auth/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -45,7 +43,7 @@ export const authService = {
     lastName: string;
   }) {
     try {
-      const response = await fetch(`${API_URL}/register`, {
+      const response = await fetch(`${process.env.API_URL}/auth/register`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -58,7 +56,7 @@ export const authService = {
       }
       return { success: false, error: data.message };
     } catch (error) {
-      return { success: false, error: "Failed to connect to server" };
+      return { success: false, error: `Failed to connect to server ${error}` };
     }
   },
 
@@ -66,7 +64,7 @@ export const authService = {
     try {
       console.log("Google credential response:", googleAuthData);
 
-      const response = await fetch("http://localhost:8080/api/auth/oauth/google", {
+      const response = await fetch(`${process.env.API_URL}/auth/oauth/google`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ credential: googleAuthData }),
