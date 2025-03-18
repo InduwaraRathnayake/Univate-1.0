@@ -14,7 +14,7 @@ const HowItWorks = () => {
         <p className="text-gray-400 text-xl my-4">
           Our platform is designed to empower CSE students at the University of
           Moratuwa by providing a seamless and comprehensive solution for
-          academic and career planning. From the moment you sign up, you'll have
+          academic and career planning. From the moment you sign up, you&apos;ll have
           access to a personalized dashboard where you can select your desired
           stream, monitor your academic progress with detailed CGPA and SGPA
           trackers, and explore tailored resources to enhance your skills and

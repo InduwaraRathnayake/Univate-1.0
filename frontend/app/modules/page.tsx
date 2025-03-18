@@ -5,7 +5,7 @@ import { PlaceholdersAndVanishInput } from "@/components/ui/placeholders-and-van
 import { motion } from "framer-motion";
 import Link from "next/link";
 // import Loader from "@/components/ui/lodder";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import Image from "next/image";
 import ErrorPage from "@/components/Error";
 
@@ -15,16 +15,14 @@ const Modules = () => {
   const [error, setError] = useState("");
   const [searchText, setSearchText] = useState("");
 
-  const router = useRouter();
-
   const fetchModules = async (query: string = "") => {
     try {
       setLoading(true);
       const url = query
-        ? `http://localhost:8080/api/modules/search/${encodeURIComponent(
+        ? `${process.env.API_URL}/modules/search/${encodeURIComponent(
             query
           )}`
-        : "http://localhost:8080/api/modules";
+        : `${process.env.API_URL}/modules`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Failed to fetch modules");
@@ -103,7 +101,7 @@ const Modules = () => {
             <h2 className="text-3xl font-bold">No Results Found</h2>
 
             <p className="text-lg text-gray-400 text-center">
-              Sorry, we couldn't find any matches for your search. <br />
+              Sorry, we couldn&apos;t find any matches for your search. <br />
               Try refining your search or return to view all modules.
             </p>
 

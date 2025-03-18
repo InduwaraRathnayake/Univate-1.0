@@ -26,7 +26,6 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import router from "next/router";
 import { useState, useEffect } from "react";
 import { authService } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
@@ -111,11 +110,11 @@ export default function ProfilePage() {
   }, []);
 
   // Handle logout
-  const handleLogout = () => {
-    localStorage.removeItem("user"); // Remove user data
-    updateUser(); // Update UI
-    router.push("/login"); // Redirect to login page
-  };
+  // const handleLogout = () => {
+  //   localStorage.removeItem("user"); // Remove user data
+  //   updateUser(); // Update UI
+  //   router.push("/login"); // Redirect to login page
+  // };
 
   return (
     <div className="min-h-screen pt-24 px-4 pb-12">
@@ -271,7 +270,7 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Award className="h-4 w-4 text-yellow-500" />
-                    <span className="text-sm font-medium">Dean's List</span>
+                    <span className="text-sm font-medium">Dean&apos;s List</span>
                   </div>
                   <span className="text-xs text-gray-500">Fall 2023</span>
                 </div>

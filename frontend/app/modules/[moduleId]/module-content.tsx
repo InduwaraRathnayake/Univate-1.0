@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import Loader from "@/components/ui/lodder";
 import Image from "next/image";
 import ErrorPage from "@/components/Error";
 
 const fetchModuleDetails = async (moduleId: string) => {
-  const response = await fetch(`http://localhost:8080/api/modules/${moduleId}`);
+  const response = await fetch(`${process.env.API_URL}/modules/${moduleId}`);
   if (!response.ok) {
     throw new Error("Failed to fetch module details");
   }
@@ -28,7 +27,7 @@ export default function ModuleContent({ moduleId }: { moduleId: string }) {
         console.log(data);
         setModuleDetails(data);
       } catch (err) {
-        setError("Error fetching module details.");
+        setError(`Error fetching module details: ${err}`);
       } finally {
         setLoading(false);
       }

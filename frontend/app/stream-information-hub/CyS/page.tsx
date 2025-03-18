@@ -18,7 +18,7 @@ const CyS = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/streams/2"); // Replace with your backend URL
+        const response = await axios.get(`${process.env.API_URL}/streams/2`); // Replace with your backend URL
         setData(response.data); // Set the data from backend into state
       } catch (error) {
         console.error("Error fetching data:", error);

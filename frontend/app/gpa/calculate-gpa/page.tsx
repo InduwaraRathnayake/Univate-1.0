@@ -75,7 +75,7 @@ const Page = () => {
         try {
           console.log("Fetching modules for semester", selectedSemester);
           const response = await fetch(
-            `http://localhost:8080/api/modules/sem/${selectedSemester}`
+            `${process.env.API_URL}/modules/sem/${selectedSemester}`
           );
           if (!response.ok) throw new Error("Failed to fetch modules");
           const data = await response.json();

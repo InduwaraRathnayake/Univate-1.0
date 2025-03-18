@@ -131,7 +131,7 @@ export default function AdminPage() {
     setIsSubmitting(true);
     try {
       console.log(data);
-      await axios.post("http://localhost:8080/api/modules", data);
+      await axios.post(`${process.env.API_URL}/modules`, data);
       toast.success("Module added successfully!");
       reset(); // <-- reset form here
     } catch (error) {

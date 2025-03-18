@@ -25,10 +25,10 @@ const TakeQuiz = () => {
     >
       <div className="max-w-lg p-6 bg-white/90 shadow-lg rounded-lg ml-2 mr-2">
         <h2 className="text-3xl font-bold text-gray-800 mb-6">
-          Unsure About Your Path? Let's Decide Together!
+          Unsure About Your Path? Let&apos;s Decide Together!
         </h2>
         <p className="text-lg text-gray-600 mb-6 leading-relaxed">
-          Choosing the right stream can feel overwhelming, but you're not alone!
+          Choosing the right stream can feel overwhelming, but you&apos;re not alone!
           Explore your interests, visualize your future, and let us guide you
           toward the perfect path. Take the first step today and uncover where
           your passion truly lies.

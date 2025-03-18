@@ -17,7 +17,7 @@ const DSE = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/streams/1"); 
+        const response = await axios.get(`${process.env.API_URL}/streams/1`); 
         setData(response.data);
       } catch (error) {
         console.error("Error fetching data:", error);

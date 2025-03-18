@@ -26,11 +26,11 @@ export default function Custom404() {
 
       <div className="info text-center max-w-[clamp(16rem,90vmin,30rem)] leading-[1.5]">
         <h2 className="text-4xl font-extrabold mb-4 text-border-black items-center  justify-center flex flex-col gap-5">
-          <span>We can't find that page</span>
+          <span>We can&apos;t find that page</span>
           <IoIosWarning />
         </h2>
         <p className="font-light mb-8 text-border-black text-base">
-          We're fairly sure that page used to be here, but seems to have gone
+          We&apos;re fairly sure that page used to be here, but seems to have gone
           missing. We do apologize on its behalf.
         </p>
         <button
