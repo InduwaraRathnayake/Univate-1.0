@@ -13,7 +13,7 @@ public class CorsConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("http://localhost:3000")
+                        .allowedOrigins("https://univate-1-0.vercel.app/")
                         .allowedMethods("GET", "POST")
                         .allowCredentials(true);
             }
