@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-Univate01Application<univate01>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.univate.univate01.Univate01Application",
+            "projectName": "univate01",
+            "args": "",
+            "envFile": "${workspaceFolder}/backend/.env"
+        }
+    ]
+}
