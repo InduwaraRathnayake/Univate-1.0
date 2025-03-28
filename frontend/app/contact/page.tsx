@@ -2,7 +2,7 @@
 
 import React from "react";
 import { FaEnvelope, FaPhone, FaCommentDots } from "react-icons/fa";
-import Button from "./ui/button";
+import Button from "@/components/ui/button";
 
 const ContactUsPage = () => {
   const chatOptions = [

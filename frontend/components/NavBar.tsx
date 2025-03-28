@@ -67,7 +67,10 @@ export function Navbar() {
               <Link href="/career-guidance" className="text-border-black hover:text-gray-600 transition-colors">
                 Career Guidance
               </Link>
-              <Link href="/#contact" className="text-border-black hover:text-gray-600 transition-colors">
+              <Link href="/about" className="text-border-black hover:text-gray-600 transition-colors">
+                About
+              </Link>
+              <Link href="/contact" className="text-border-black hover:text-gray-600 transition-colors">
                 Contact
               </Link>
 
@@ -122,7 +125,10 @@ export function Navbar() {
                   <Link href="/career-guidance" className="text-border-black hover:text-gray-400 transition-colors px-4 py-2" onClick={() => setIsOpen(false)}>
                     Career Guidance
                   </Link>
-                  <Link href="#contact" className="text-border-black hover:text-gray-400 transition-colors px-4 py-2" onClick={() => setIsOpen(false)}>
+                  <Link href="/about" className="text-border-black hover:text-gray-400 transition-colors px-4 py-2" onClick={() => setIsOpen(false)}>
+                    About
+                  </Link>
+                  <Link href="/contact" className="text-border-black hover:text-gray-400 transition-colors px-4 py-2" onClick={() => setIsOpen(false)}>
                     Contact
                   </Link>
                   <hr className="border-white/20" />
