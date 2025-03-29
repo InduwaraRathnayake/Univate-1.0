@@ -1,4 +1,3 @@
-import { FeaturesSectionDemo } from "@/components/Demo";
 import Features from "@/components/Features";
 import Hero from "@/components/Hero";
 import HowItWorks from "@/components/HowItWorks";
@@ -18,7 +17,6 @@ export default function Home() {
       <div className="w-full pr-0 pl-0 ">
         <Services />
         <TakeQuiz />
-        <FeaturesSectionDemo />
         <Features />
         <Testimonial/>
       </div>

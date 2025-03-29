@@ -13,7 +13,6 @@ import {
 import {
   User,
   Book,
-  Clock,
   Award,
   Activity,
   Calendar,
@@ -22,22 +21,26 @@ import {
   Bell,
   FileText,
   Users,
+  Plus,
+  X,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import Button from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useState, useEffect } from "react";
 import { authService } from "@/lib/auth.service";
 import { useRouter } from "next/navigation";
+import { AddSemesterModal } from "@/components/AddSemester";
 
 // Dummy data for the line chart
 const performanceData = [
-  { month: "Jan", score: 65 },
-  { month: "Feb", score: 75 },
-  { month: "Mar", score: 70 },
-  { month: "Apr", score: 85 },
-  { month: "May", score: 80 },
-  { month: "Jun", score: 90 },
+  { month: "Sem 1", score: 3.89 },
+  { month: "Sem 2", score: 3.85 },
+  { month: "Sem 3", score: 3.57 },
+  { month: "Sem 4", score: 3.85 },
+  { month: "Sem 5", score: 3.75 },
+  { month: "Sem 6", score: 3.9 },
 ];
 
 // Dummy data for course schedule
@@ -81,6 +84,84 @@ const upcomingAssignments = [
 ];
 
 export default function ProfilePage() {
+  const [selectedSemester, setSelectedSemester] = useState<{
+    id: number;
+    name: string;
+    gpa: number;
+    modules: { code: string; name: string; credits: number; grade: string }[];
+  } | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const handleViewDetails = (semester: {
+    id: number;
+    name: string;
+    gpa: number;
+    modules: { code: string; name: string; credits: number; grade: string }[];
+  }) => {
+    setSelectedSemester(semester);
+    setIsModalOpen(true);
+  };
+
+  const [semesters, setSemesters] = useState([
+    {
+      id: 1,
+      name: "Semester 1",
+      gpa: 3.89,
+      modules: [
+        {
+          code: "CS101",
+          name: "Introduction to Programming",
+          credits: 4,
+          grade: "A",
+        },
+        { code: "MATH101", name: "Calculus I", credits: 3, grade: "A-" },
+        {
+          code: "PHYS101",
+          name: "Physics Fundamentals",
+          credits: 3,
+          grade: "B+",
+        },
+      ],
+    },
+    {
+      id: 2,
+      name: "Semester 2",
+      gpa: 3.85,
+      modules: [
+        { code: "CS102", name: "Data Structures", credits: 4, grade: "A" },
+        {
+          code: "MATH102",
+          name: "Discrete Mathematics",
+          credits: 3,
+          grade: "B+",
+        },
+        { code: "EE101", name: "Electrical Circuits", credits: 3, grade: "A-" },
+      ],
+    },
+  ]);
+
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+
+  // Handle saving new semester
+  const handleSaveSemester = (newSemester: {
+    name: string;
+    gpa: string;
+    modules: { code: string; name: string; credits: string; grade: string }[];
+  }) => {
+    setSemesters([
+      ...semesters,
+      {
+        ...newSemester,
+        gpa: parseFloat(newSemester.gpa),
+        modules: newSemester.modules.map((module) => ({
+          ...module,
+          credits: parseInt(module.credits, 10),
+        })),
+        id: Date.now(),
+      },
+    ]);
+  };
+
   const [user, setUser] = useState<string | null>(null);
   const router = useRouter();
 
@@ -198,63 +279,8 @@ export default function ProfilePage() {
                 </div>
                 <div>
                   <p className="text-sm font-medium">Current Semester</p>
-                  <h3 className="text-lg font-semibold">Spring 2024</h3>
+                  <h3 className="text-lg font-semibold">Semester 4</h3>
                 </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Recent Activity Card */}
-          <Card className="bg-white/90 backdrop-blur-lg">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xl font-bold">
-                Recent Activity
-              </CardTitle>
-              <Clock className="h-5 w-5 text-[#3D52A0]" />
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div className="flex items-center">
-                  <div className="ml-4">
-                    <p className="text-sm font-medium">Submitted Assignment</p>
-                    <p className="text-xs text-gray-500">2 hours ago</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <div className="ml-4">
-                    <p className="text-sm font-medium">Attended Lecture</p>
-                    <p className="text-xs text-gray-500">5 hours ago</p>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Performance Chart Card */}
-          <Card className="bg-white/90 backdrop-blur-lg md:col-span-2">
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-xl font-bold">
-                Performance Trend
-              </CardTitle>
-              <Activity className="h-5 w-5 text-[#3D52A0]" />
-            </CardHeader>
-            <CardContent>
-              <div className="h-[200px]">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={performanceData}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="month" />
-                    <YAxis />
-                    <Tooltip />
-                    <Line
-                      type="monotone"
-                      dataKey="score"
-                      stroke="#3D52A0"
-                      strokeWidth={2}
-                      dot={{ fill: "#3D52A0" }}
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
               </div>
             </CardContent>
           </Card>
@@ -270,26 +296,219 @@ export default function ProfilePage() {
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
                     <Award className="h-4 w-4 text-yellow-500" />
-                    <span className="text-sm font-medium">Dean&apos;s List</span>
+                    <span className="text-sm font-medium">
+                      Dean&apos;s List
+                    </span>
                   </div>
-                  <span className="text-xs text-gray-500">Fall 2023</span>
+                  <span className="text-xs text-gray-800">Semester 1</span>
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-2">
-                    <Award className="h-4 w-4 text-blue-500" />
+                    <Award className="h-4 w-4 text-yellow-500" />
                     <span className="text-sm font-medium">
-                      Perfect Attendance
+                      Dean&apos;s List
                     </span>
                   </div>
-                  <span className="text-xs text-gray-500">Spring 2023</span>
+                  <span className="text-xs text-gray-800">Semester 2</span>
                 </div>
               </div>
             </CardContent>
           </Card>
-        </motion.div>
 
-        {/* Additional Sections */}
-        <motion.div
+          {/* Performance Chart Card */}
+          <Card className="bg-white/90 backdrop-blur-lg md:col-span-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xl font-bold">
+                Performance Trend
+              </CardTitle>
+              <Activity className="h-5 w-5 text-[#3D52A0]" />
+            </CardHeader>
+            <CardContent>
+              <div className="h-[300px]">
+                {" "}
+                {/* Increased from h-[200px] */}
+                <ResponsiveContainer width="100%" height="100%">
+                  <LineChart
+                    data={performanceData}
+                    margin={{ top: 20, right: 20, left: 10, bottom: 10 }}
+                  >
+                    <CartesianGrid
+                      strokeDasharray="3 3"
+                      vertical={false}
+                      stroke="#f0f0f0"
+                    />
+                    <XAxis
+                      dataKey="month"
+                      tick={{ fill: "#6b7280" }}
+                      axisLine={{ stroke: "#e5e7eb" }}
+                    />
+                    <YAxis
+                      domain={[3.0, 4.0]}
+                      tick={{ fill: "#6b7280" }}
+                      axisLine={{ stroke: "#e5e7eb" }}
+                      tickFormatter={(value) => value.toFixed(1)}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        backgroundColor: "#ffffff",
+                        border: "1px solid #e5e7eb",
+                        borderRadius: "0.375rem",
+                        boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+                      }}
+                      formatter={(value) => [`GPA: ${value}`, ""]}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="score"
+                      stroke="#3D52A0"
+                      strokeWidth={3}
+                      dot={{
+                        fill: "#3D52A0",
+                        strokeWidth: 2,
+                        r: 5,
+                      }}
+                      activeDot={{
+                        r: 7,
+                        stroke: "#3D52A0",
+                        strokeWidth: 2,
+                        fill: "#ffffff",
+                      }}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white/90 backdrop-blur-lg">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-xl font-bold">
+                Semester Results
+              </CardTitle>
+              <Book className="h-5 w-5 text-[#3D52A0]" />
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {/* Existing Results */}
+                <div className="space-y-3">
+                  {semesters.map((semester) => (
+                    <div
+                      key={semester.id}
+                      className="flex justify-between items-center p-2 bg-gray-50 rounded"
+                    >
+                      <div>
+                        <p className="font-medium">{semester.name}</p>
+                        <p className="text-xs text-gray-500">
+                          GPA: {semester.gpa}
+                        </p>
+                      </div>
+                      <button
+                        className="text-xs text-blue-600 hover:text-blue-800"
+                        onClick={() => handleViewDetails(semester)}
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Add New Result Button */}
+                <Button
+                  title="Add New Semester"
+                  icon={<Plus className="h-4 w-4 mr-2" />}
+                  handleClick={() => setIsAddModalOpen(true)}
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Semester Details Modal */}
+          {isAddModalOpen && (
+            <AddSemesterModal
+              onSave={handleSaveSemester}
+              onClose={() => setIsAddModalOpen(false)}
+            />
+          )}
+          {isModalOpen && selectedSemester && (
+            <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+              <div className="bg-white rounded-lg w-full max-w-2xl max-h-[80vh] overflow-y-auto">
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-6">
+                    <h3 className="text-xl font-bold">
+                      {selectedSemester.name} Results
+                    </h3>
+                    <button
+                      onClick={() => setIsModalOpen(false)}
+                      className="text-gray-500 hover:text-gray-700"
+                    >
+                      <X className="h-5 w-5" />
+                    </button>
+                  </div>
+
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-sm">
+                      <thead>
+                        <tr className="border-b">
+                          <th className="text-left py-3 px-4">Module Code</th>
+                          <th className="text-left py-3 px-4">Module Name</th>
+                          <th className="text-left py-3 px-4">Credits</th>
+                          <th className="text-left py-3 px-4">Grade</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {selectedSemester.modules.map((module) => (
+                          <tr
+                            key={module.code}
+                            className="border-b hover:bg-gray-50"
+                          >
+                            <td className="py-3 px-4 font-mono">
+                              {module.code}
+                            </td>
+                            <td className="py-3 px-4">{module.name}</td>
+                            <td className="py-3 px-4 text-center">
+                              {module.credits}
+                            </td>
+                            <td className="py-3 px-4 font-medium text-center">
+                              {module.grade}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div className="mt-6 flex justify-between items-center">
+                    <div>
+                      <p className="text-sm text-gray-600">
+                        Semester GPA:{" "}
+                        <span className="font-bold">
+                          {selectedSemester.gpa}
+                        </span>
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Total Credits:{" "}
+                        <span className="font-bold">
+                          {selectedSemester.modules.reduce(
+                            (sum, module) => sum + module.credits,
+                            0
+                          )}
+                        </span>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setIsModalOpen(false)}
+                      className="px-4 py-2 bg-[#3D52A0] text-white rounded hover:bg-[#2C3B7A] transition-colors"
+                    >
+                      Close
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </motion.div>
+          {/* Additional Sections */}
+          <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
