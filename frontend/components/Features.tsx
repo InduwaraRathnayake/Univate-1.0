@@ -1,77 +1,95 @@
 "use client";
 import React from "react";
 import Link from "next/link";
+import { 
+  FaCalculator, 
+  FaBookOpen, 
+  FaQuestionCircle, 
+  FaLayerGroup,
+  FaArrowRight
+} from "react-icons/fa";
 
-interface Book {
-  image: string;
+interface Feature {
+  icon: React.ReactNode;
   title: string;
-  url: string; // Add the url property to each book object
+  description: string;
+  url: string;
 }
 
-const FeaturesSlide = ({ book }: { book: Book }) => (
-  <div className="w-full px-4 my-4 flex flex-col items-center text-center relative">
-    <img
-      src={book.image}
-      alt={book.title}
-      className="mb-4 h-40 object-cover w-full rounded-md" // Added border radius
-    />
-    <h3 className="text-lg font-semibold text-white">{book.title}</h3>
-  </div>
+const FeatureCard = ({ feature }: { feature: Feature }) => (
+  <Link
+    href={feature.url}
+    className="group relative p-8 bg-white rounded-xl border-2 border-gray-200 hover:border-gray-400 transition-all duration-300 shadow-sm hover:shadow-lg flex flex-col items-center text-center hover:-translate-y-1"
+    aria-label={`Go to ${feature.title}`}
+  >
+    <div className="w-16 h-16 mb-6 rounded-full bg-gray-50 flex items-center justify-center text-black group-hover:bg-gray-200 transition-colors duration-300">
+      {feature.icon}
+    </div>
+    <h3 className="text-xl font-semibold text-black mb-3 group-hover:text-gray-600 transition-colors">
+      {feature.title}
+    </h3>
+    <p className="text-gray-500 mb-4">{feature.description}</p>
+    <div className="flex items-center text-black transition-colors duration-300">
+      <span className="mr-2 text-sm font-medium">Learn more</span>
+      <FaArrowRight className="w-3 h-3" />
+    </div>
+    <div className="absolute inset-0 rounded-xl border-2 border-transparent group-hover:border-gray-400 transition-all duration-300 pointer-events-none"></div>
+  </Link>
 );
 
 const Features = () => {
-  const books = [
+  const features = [
     {
-      image: "gpa.jpg",
-      title: 'GPA Calculator',
-      url: '/gpa', 
+      icon: <FaCalculator className="w-6 h-6" />,
+      title: "GPA Calculator",
+      description: "Track and predict your academic performance with precision",
+      url: "/gpa",
     },
     {
-      image: "streams.jpeg",
-      title: "Stream Information Hub",
-      url: '/stream-information-hub', 
+      icon: <FaBookOpen className="w-6 h-6" />,
+      title: "Stream Hub",
+      description: "Comprehensive information about all academic streams",
+      url: "/stream-information-hub",
     },
     {
-      image: "quiz.jpg",
-      title: "Stream Selection Quiz",
-      url: '/quiz', 
+      icon: <FaQuestionCircle className="w-6 h-6" />,
+      title: "Stream Quiz",
+      description: "Get personalized recommendations for your academic path",
+      url: "/quiz",
     },
     {
-      image: "modules.jpg",
+      icon: <FaLayerGroup className="w-6 h-6" />,
       title: "Modules",
-      url: '/modules',
+      description: "Detailed course information and learning resources",
+      url: "/modules",
     },
   ];
 
   return (
-    <div className="container mx-auto px-4 flex justify-center items-center min-h-screen py-28">
-      <div className="flex flex-wrap justify-center items-center w-full">
-        <div className="w-full md:w-6/12 px-4 text-center md:text-left flex flex-col gap-4 justify-center items-left">
-          <h1 className="text-5xl text-white font-bold mb-4">Features</h1>
-          <p className="text-2xl text-gray-400 mb-4">
-            Discover the Key Features of Our Platform
-          </p>
-          <p className="mb-4 text-gray-500">
-            Explore your path with our interactive quiz, GPA tracker,
-            digitalized handbook, and tailored career guidance—all on a
-            user-friendly platform designed to simplify your academic journey.
+    <section className="bg-white py-24 px-4">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-16">
+          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            Academic Success Suite
+          </h1>
+          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            Professional tools designed to optimize your educational experience
           </p>
         </div>
-        <div className="w-full md:w-6/12 flex justify-center items-center">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full justify-items-center">
-            {books.map((book, index) => (
-              <Link
-                key={index}
-                href={book.url}
-                className="relative w-72 p-4 border-2 border-gray-400 rounded-md shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300"
-              >
-                <FeaturesSlide book={book} />
-              </Link>
-            ))}
-          </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+          {features.map((feature, index) => (
+            <FeatureCard key={`feature-${index}`} feature={feature} />
+          ))}
+        </div>
+
+        <div className="mt-8 text-center">
+          <p className="text-gray-500 text-sm">
+            Click on any tool to explore its features
+          </p>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
